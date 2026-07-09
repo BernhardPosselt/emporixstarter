@@ -1,31 +1,80 @@
-# Multiplatform Lib
+# Project Setup
 
-First start your local nexus repository
+What you need to run this project:
 
-    mkdir -p docker && sudo chown -R 200 docker
-    docker compose up
+* JDK 25 (TODO: devcontainers)
+* docker or podman
 
-Nexus is available at http://localhost:8000
+## Gradle Setup
 
-Then log in as admin and the password stored in **admin.password**
+There are 2 different kinds of projects that we build:
 
-    cat docker/nexus/admin.password
+* [Composite Builds](https://docs.gradle.org/current/userguide/composite_builds.html)
+* [Multi-Project Builds](https://docs.gradle.org/current/userguide/multi_project_builds.html)
 
-Then create an npm hosted repository called **npm**. Next create a role called Nexus and give it the following privileges:
+Multi-Project Builds allow you to split up your project into separate modules (think atscore, atsfacdes, etc.). These all  are built and released together.
 
-* nx-repository-admin-npm-npm-*
-* nx-repository-view-maven2-\*-*
-* nx-repository-view-npm-\*-*
+Composite Builds are separate builds that can be built and released independently of each other. They also include shared build logic.
 
-Then create a user with password and id **nexus** and add the **Nexus** role.
+Each Project has its own wrapper. While it's technically not required, IntelliJ does not seem to work with having just a parent wrapper directory. This also means that you need to manually update all projects using:
 
-Finally, create an npm proxy with name **npm-proxy** and group called **npm-public** which includes the npm registry and npmjs proxy
+    ./gradlew wrapper --gradle-version=x.x.x
 
-Publish maven build:
+each time there's a Gradle update.
 
-    ./gradlew publishAllPublicationsToMavenRepository
 
-Publish npm build:
+## Project Structure
 
-    ./gradlew publishJsPackageToNexusRegistry
+### libs.versions.toml
 
+This is where all library versions across all projects are persisted. That way, you only need to update dependencies once and ensure consistent versions across all projects.
+
+This needs the following block in each project's **settings.gradle.kts**
+
+```kt
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../libs.versions.toml"))
+        }
+    }
+}
+```
+
+### build-logic
+
+This project includes Convention Plugins (= included **build.gradle.kts** code) and tasks, that are the same across many projects. To make use of this folder in your project, you need to add this to your **settings.gradle.kts**:
+
+```kt
+includeBuild("../build-logic")
+```
+
+If you are only using Convention Plugins, no further changes are required. 
+
+If you only want to make use of tasks defined inside this folder and no convention plugin, your **build.gradle.kts** needs to add this block at the very top to add files from this directory to your classpath:
+
+```kt
+buildscript {
+    dependencies {
+        classpath(":build-logic")
+    }
+}
+```
+
+### TODO
+
+* Containerization
+* Devcontainers
+* CI
+* Spring Boot Setup
+* Spring Security
+* Spring Integration Test Template
+* Spring Unit Test Template
+* Spring Controller MVC Test Template
+* Emporix API Client extension
+* Push to Repo
+* Static Analysis
+* Formatter
+* Github Actions CI Pipeline
+* K8s setup
+* Think about authorization/OAuth

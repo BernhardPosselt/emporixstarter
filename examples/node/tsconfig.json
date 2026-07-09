@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "./built",
-    "allowJs": true,
-    "target": "ES2024",
-  },
-  "include": ["./src/**/*"],
-}
