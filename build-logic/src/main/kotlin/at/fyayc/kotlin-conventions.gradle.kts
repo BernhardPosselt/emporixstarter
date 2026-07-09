@@ -49,8 +49,18 @@ repositories {
 val junitTags = listOf("integration", "migration")
 testing {
     suites {
-        val test = named<JvmTestSuite>("test") {
+        val test = named<JvmTestSuite>("test").configure {
             useJUnitJupiter()
+            targets.all {
+                testTask.configure {
+                    options {
+                        testLogging {
+                            showStandardStreams = true
+                            exceptionFormat = TestExceptionFormat.FULL
+                        }
+                    }
+                }
+            }
         }
         junitTags.forEach { tag ->
             register<JvmTestSuite>("${tag}Test") {
@@ -61,7 +71,12 @@ testing {
                 targets {
                     all {
                         testTask.configure {
-                            shouldRunAfter(test)
+                            options {
+                                testLogging {
+                                    showStandardStreams = true
+                                    exceptionFormat = TestExceptionFormat.FULL
+                                }
+                            }
                         }
                     }
                 }

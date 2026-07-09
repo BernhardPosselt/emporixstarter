@@ -61,6 +61,14 @@ buildscript {
 }
 ```
 
+### common
+
+Includes common utilities for all projects, including test utilities. These are put into the **testFixtures** folder and can be included using:
+
+```kt
+testImplementation(testFixtures("at.fyayc:common"))
+```
+
 ### TODO
 
 * Containerization
