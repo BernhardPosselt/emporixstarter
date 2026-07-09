@@ -6,6 +6,7 @@ coroutines = "1.11.0"
 
 [libraries]
 junit-kotlin = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-api", version = "6.1.1" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
@@ -20,18 +21,18 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 kotlin-plain-objects = { module = "org.jetbrains.kotlin:kotlin-js-plain-objects", version.ref = "kotlin" }
-spring-boot-starter-actuator = { module="org.springframework.boot:spring-boot-starter-actuator"}
-spring-boot-starter-security = { module="org.springframework.boot:spring-boot-starter-security"}
-spring-boot-starter-webmvc = { module="org.springframework.boot:spring-boot-starter-webmvc"}
-kotlin-reflect = { module="org.jetbrains.kotlin:kotlin-reflect"}
-jackson-module-kotlin = { module="tools.jackson.module:jackson-module-kotlin"}
-spring-boot-starter-actuator-test = { module="org.springframework.boot:spring-boot-starter-actuator-test"}
-spring-boot-starter-security-test = { module="org.springframework.boot:spring-boot-starter-security-test"}
-spring-boot-starter-webmvc-test = { module="org.springframework.boot:spring-boot-starter-webmvc-test"}
-spring-boot-testcontainers = { module="org.springframework.boot:spring-boot-testcontainers"}
-kotlin-test-junit = { module="org.jetbrains.kotlin:kotlin-test-junit"}
-testcontainers-junit-jupiter = { module="org.testcontainers:testcontainers-junit-jupiter"}
-junit-platform-launcher = { module="org.junit.platform:junit-platform-launcher"}
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+jackson-module-kotlin = { module = "tools.jackson.module:jackson-module-kotlin" }
+spring-boot-starter-actuator-test = { module = "org.springframework.boot:spring-boot-starter-actuator-test" }
+spring-boot-starter-security-test = { module = "org.springframework.boot:spring-boot-starter-security-test" }
+spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
+spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-testcontainers" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:testcontainers-junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 mockito = { module = "org.mockito:mockito-core" }
 
 [plugins]

@@ -10,6 +10,8 @@ plugins {
     jacoco
     id("org.jetbrains.kotlin.jvm")
     id("com.github.ben-manes.versions")
+    `java-test-fixtures`
+    `jvm-test-suite`
 }
 
 jacoco {
@@ -18,7 +20,7 @@ jacoco {
 
 kotlin {
     compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+        freeCompilerArgs.addAll("-Xjsr305=strict")
     }
 }
 
@@ -32,26 +34,47 @@ repositories {
     mavenCentral()
 }
 
-// all of these tags can be used in tests using one of these, e.g. @Tag("integration")
-val junitTags  = listOf("unit", "integegration", "migration")
-
-tasks.withType<Test>().named("test").configure {
-    useJUnitPlatform {
-        includeTags(*junitTags.toTypedArray())
-    }
-    testLogging {
-        exceptionFormat = TestExceptionFormat.FULL
-    }
-}
-
-junitTags.forEach { tag ->
-    tasks.register<Test>("${tag}Test") {
-        description = "Runs $tag tests"
-        useJUnitPlatform {
-            includeTags(tag)
+/**
+ * This configures each project to have 3 directories:
+ * * test/
+ * * integrationTest/
+ * * migrationTest/
+ *
+ * All tests of these directories can be run using the tasks with the same names, e.g. ./gradlew integrationTest
+ *
+ * integrationTest and migrationTest will not be executed during the check phase, meaning they won't
+ * be run on ./gradlew build or ./gradlew check. That's because we don't want a test database
+ * accessible when running ./gradlew build, but we do want unit tests in test/ to execute
+ */
+val junitTags = listOf("integration", "migration")
+testing {
+    suites {
+        val test = named<JvmTestSuite>("test") {
+            useJUnitJupiter()
         }
-        testLogging {
-            exceptionFormat = TestExceptionFormat.FULL
+        junitTags.forEach { tag ->
+            register<JvmTestSuite>("${tag}Test") {
+                description = "Runs $tag tests"
+                dependencies {
+                    implementation(project())
+                }
+                targets {
+                    all {
+                        testTask.configure {
+                            shouldRunAfter(test)
+                        }
+                    }
+                }
+            }
+            configurations.named("${tag}TestImplementation") {
+                extendsFrom(configurations.testImplementation)
+            }
+            configurations.named("${tag}TestApi") {
+                extendsFrom(configurations.testApi)
+            }
+            configurations.named("${tag}TestCompileOnly") {
+                extendsFrom(configurations.testCompileOnly)
+            }
         }
     }
 }

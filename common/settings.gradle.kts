@@ -1,4 +1,4 @@
-rootProject.name = "emporixstarter"
+rootProject.name = "common"
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -8,5 +8,4 @@ dependencyResolutionManagement {
     }
 }
 
-includeBuild("../common")
-includeBuild("../api-client")
+includeBuild("../build-logic")

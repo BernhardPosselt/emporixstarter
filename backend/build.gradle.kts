@@ -1,10 +1,3 @@
-import at.fyayc.tasks.MyTask
-
-//buildscript {
-//	dependencies {
-//		classpath(":build-logic")
-//	}
-//}
 
 plugins {
 	alias(libs.plugins.kotlin.spring)
@@ -13,20 +6,17 @@ plugins {
 	id("at.fyayc.kotlin-conventions")
 }
 
-tasks.register<MyTask>("tdf") {
-
-}
-
 version = "0.0.1-SNAPSHOT"
 
 val mockitoAgent = configurations.create("mockitoAgent")
 dependencies {
-	implementation("at.fyayc:emporix-api-client:1.0.0-SNAPSHOT")
+	implementation("at.fyayc:emporix-api-client")
 	implementation(libs.spring.boot.starter.actuator)
 	implementation(libs.spring.boot.starter.security)
 	implementation(libs.spring.boot.starter.webmvc)
 	implementation(libs.kotlin.reflect)
 	implementation(libs.jackson.module.kotlin)
+	testImplementation(testFixtures("at.fyayc:common"))
 	testImplementation(libs.spring.boot.starter.actuator.test)
 	testImplementation(libs.spring.boot.starter.security.test)
 	testImplementation(libs.spring.boot.starter.webmvc.test)
@@ -40,8 +30,5 @@ dependencies {
 tasks.withType<Test> {
 	jvmArgs.add("-javaagent:${mockitoAgent.asPath}")
 }
-
-
-
 
 
