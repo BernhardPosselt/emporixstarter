@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.webmvc)
     implementation(libs.spring.boot.starter.kotlinx.serialization.json)
+    implementation(libs.springdoc)
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines)
     testImplementation(testFixtures("at.fyayc:common"))

@@ -55,6 +55,8 @@ class WebSecurityConfiguration {
         http.invoke {
             securityMatcher("/**")
             authorizeHttpRequests {
+                authorize("/swagger-ui/**", permitAll)
+                authorize("/v3/api-docs/**", permitAll)
                 // allow cors
                 authorize(HttpMethod.OPTIONS, "/**", permitAll)
                 authorize(HttpMethod.GET, "/products/**", authenticated)
