@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: "emporixstarter"
+
+emporixstarter:
+  cors-domains: [ ]
+  users:
+    actuator:
+      login: "actuator"
+      # FIXME: only for demonstration purposes, put this somewhere else
+      password: "developmentpassword"
