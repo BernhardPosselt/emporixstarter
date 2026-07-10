@@ -1,7 +1,9 @@
 spring:
   application:
     name: "emporixstarter"
-
+  threads:
+    virtual:
+      enabled: true
 emporixstarter:
   cors-domains: [ ]
   users:
