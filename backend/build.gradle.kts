@@ -1,3 +1,5 @@
+import at.fyayc.tasks.CreateDevProfile
+
 plugins {
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.spring.boot)
@@ -34,4 +36,7 @@ tasks.withType<Test>().configureEach {
     jvmArgs.add("-javaagent:${mockitoAgent.get().asPath}")
 }
 
-
+tasks.register<CreateDevProfile>("createDevProfile") {
+    description = "Creates an application-dev.yml inside your resources folder"
+    file = layout.projectDirectory.file("src/main/resources/application-dev.yml")
+}
