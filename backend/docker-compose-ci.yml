@@ -1,0 +1,14 @@
+services:
+  backend:
+    build:
+      dockerfile: backend/Containerfile
+      context: ..
+      target: build
+    ports:
+      - "8080:8080"
+      # debug ports for local development
+      - "5005:5005"
+    environment:
+      # java opts are spinning up the server in debug mode
+      JVM_OPTS: "-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n -Xms1024m -Xmx1024m"
+    tty: true

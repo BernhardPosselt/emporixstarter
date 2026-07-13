@@ -1,0 +1,4 @@
+emporixstarter:
+  users:
+    actuator:
+      password: "developmentpassword"

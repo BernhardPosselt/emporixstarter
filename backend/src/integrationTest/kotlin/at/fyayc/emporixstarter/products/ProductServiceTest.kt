@@ -12,6 +12,6 @@ class ProductServiceTest(
 ) {
     @Test
     fun name() {
-        assertEquals("hi", service.doSomething())
+        assertEquals("hia", service.doSomething())
     }
 }

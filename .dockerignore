@@ -1,0 +1,7 @@
+*/.gradle
+*/build
+*/.kotlin
+*/Containerfile
+*/.idea
+*/docker-compose-*.yml
+.git
