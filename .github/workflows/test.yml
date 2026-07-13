@@ -22,7 +22,7 @@ jobs:
         uses: ./.github/actions/setup-tests.yml
       - name: Setup mounted volumes
         run: mkdir -p build/test-results build/jacoco && chown -R 1000:1000 build
-        working-directory: backend
+        working-directory: common
       - name: Run common tests
         run: docker compose -f docker-compose-ci.yml build && docker compose -f docker-compose-ci.yml up
         working-directory: common
