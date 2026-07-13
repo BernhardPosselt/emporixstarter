@@ -12,7 +12,7 @@ jobs:
 
       - name: Set up Docker Compose
         # pin to hash to avoid attacks changing tags to vulnerable version
-        uses: docker/setup-compose-action@4eb059f
+        uses: docker/setup-compose-action@4eb059ff7f16592f9c84d5ca339c53cb7c5064e2
   backend-test:
     runs-on: ubuntu-latest
     needs: setup-test
