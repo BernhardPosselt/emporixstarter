@@ -1,6 +1,7 @@
 application-dev.yml
 /docker
 node_modules
+*/container
 .gradle
 build/
 /buildSrc/.gradle

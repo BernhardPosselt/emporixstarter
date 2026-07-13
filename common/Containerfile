@@ -1,0 +1,22 @@
+ARG JDK=25.0.3_9
+
+FROM docker.io/eclipse-temurin:${JDK}-jdk-alpine
+
+ARG UID=1000
+ARG GID=1000
+
+RUN addgroup -g ${GID} server && adduser -u ${UID} -G server -D server -h /home/server
+
+WORKDIR /home/server
+
+USER server
+
+COPY --chown=server:server ../libs.versions.toml libs.versions.toml
+COPY --chown=server:server ../common common
+COPY --chown=server:server ../build-logic build-logic
+
+WORKDIR common
+
+RUN ["./gradlew", "assemble"]
+RUN mkdir -p build/test-results build/jacoco && chown -R server:server build
+CMD ["./gradlew", "test", "integrationTest", "migrationTest", "--console=plain", "jacocoTestReport"]

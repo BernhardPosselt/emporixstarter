@@ -18,13 +18,10 @@ COPY --chown=server:server ../common common
 COPY --chown=server:server ../build-logic build-logic
 COPY --chown=server:server ../backend backend
 
-RUN ls -lah
-RUN ls backend -lah
-
 WORKDIR backend
 
 RUN ["./gradlew", "assemble"]
-
+RUN mkdir -p build/test-results build/jacoco && chown -R server:server build
 CMD ["./gradlew", "test", "integrationTest", "migrationTest", "--console=plain", "jacocoTestReport"]
 
 FROM docker.io/eclipse-temurin:${JDK}-jre-alpine

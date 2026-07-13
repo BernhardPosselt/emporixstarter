@@ -1,9 +1,8 @@
 services:
   backend:
     build:
-      dockerfile: backend/Containerfile
+      dockerfile: common/Containerfile
       context: ..
-      target: build
     ports:
       - "8080:8080"
       # debug ports for local development
@@ -14,5 +13,5 @@ services:
     tty: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./container/build/test-results:/home/server/backend/build/test-results
-      - ./container/build/jacoco:/home/server/backend/build/jacoco
+      - ./container/build/test-results:/home/server/common/build/test-results
+      - ./container/build/jacoco:/home/server/common/build/jacoco
