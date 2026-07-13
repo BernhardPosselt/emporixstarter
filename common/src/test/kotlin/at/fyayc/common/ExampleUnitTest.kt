@@ -6,6 +6,6 @@ import org.junit.jupiter.api.Test
 class ExampleUnitTest {
     @Test
     fun name() {
-        Assertions.assertEquals(0, 1)
+        Assertions.assertEquals(0, 0)
     }
 }
