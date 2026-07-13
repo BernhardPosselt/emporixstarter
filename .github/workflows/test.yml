@@ -9,24 +9,16 @@ jobs:
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v4
-      - name: Setup
-        uses: ./.github/actions/setup-tests.yml
-      - name: Setup mounted volumes
-        run: mkdir -p build/test-results build/jacoco && chown -R 1000:1000 build
-        working-directory: backend
       - name: Run backend tests
-        run: docker compose -f docker-compose-ci.yml build && docker compose -f docker-compose-ci.yml up
-        working-directory: backend
+        uses: ./.github/actions/run-tests
+        with:
+          directory: "backend"
   common-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v4
-      - name: Setup
-        uses: ./.github/actions/setup-tests.yml
-      - name: Setup mounted volumes
-        run: mkdir -p build/test-results build/jacoco && chown -R 1000:1000 build
-        working-directory: common
       - name: Run common tests
-        run: docker compose -f docker-compose-ci.yml build && docker compose -f docker-compose-ci.yml up
-        working-directory: common
+        uses: ./.github/actions/run-tests
+        with:
+          directory: "common"
