@@ -1,5 +1,5 @@
 services:
-  backend:
+  application:
     build:
       dockerfile: backend/Containerfile
       context: ..

@@ -20,7 +20,6 @@ description = "Emporix API Client"
 kotlin {
     compilerOptions {
         freeCompilerArgs.addAll(
-            "-Xannotation-default-target=param-property",
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-opt-in=kotlin.js.ExperimentalJsExport",
             "-opt-in=kotlin.time.ExperimentalTime",

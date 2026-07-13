@@ -14,5 +14,5 @@ runs:
     working-directory: "${{ inputs.directory }}"
   - name: "Run tests"
     shell: "bash"
-    run: "docker compose -f docker-compose-ci.yml build && docker compose -f docker-compose-ci.yml up"
+    run: "docker compose -f docker-compose-ci.yml build && docker compose -f docker-compose-ci.yml up --exit-code-from=application"
     working-directory: "${{ inputs.directory }}"
