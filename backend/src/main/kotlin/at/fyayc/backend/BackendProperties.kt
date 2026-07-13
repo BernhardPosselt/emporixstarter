@@ -2,7 +2,7 @@ package at.fyayc.backend
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties(prefix = "backdend")
+@ConfigurationProperties(prefix = "backend")
 data class BackendProperties(
     val users: Users,
     val corsDomains: List<String>,
