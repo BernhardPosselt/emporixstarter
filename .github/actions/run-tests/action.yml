@@ -10,7 +10,7 @@ runs:
     uses: "docker/setup-compose-action@4eb059ff7f16592f9c84d5ca339c53cb7c5064e2"
   - name: "Setup mounted volumes"
     shell: "bash"
-    run: "mkdir -p container/test-results container/jacoco && sudo chown -R 1000:1000 container"
+    run: "mkdir -p container/build/test-results container/build/jacoco && sudo chown -R 1000:1000 container"
     working-directory: "${{ inputs.directory }}"
   - name: "Run tests"
     shell: "bash"
