@@ -1,4 +1,4 @@
-package at.fyayc.emporixstarter
+package at.fyayc.backend
 
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
@@ -23,10 +23,10 @@ class WebSecurityConfiguration {
     @Order(1)
     fun actuatorSecurity(
         http: HttpSecurity,
-        properties: Properties,
+        backendProperties: BackendProperties,
         passwordEncoder: PasswordEncoder,
     ): SecurityFilterChain {
-        val user = properties.users.actuator
+        val user = backendProperties.users.actuator
         val userDetail = User.builder()
             .username(user.login)
             .password(passwordEncoder.encode(user.password))

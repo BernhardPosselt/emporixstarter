@@ -1,4 +1,4 @@
-package at.fyayc.emporixstarter
+package at.fyayc.backend
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

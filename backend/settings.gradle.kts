@@ -1,4 +1,4 @@
-rootProject.name = "emporixstarter"
+rootProject.name = "backend"
 
 dependencyResolutionManagement {
     versionCatalogs {

@@ -1,4 +1,4 @@
-package at.fyayc.emporixstarter.products
+package at.fyayc.backend.products
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

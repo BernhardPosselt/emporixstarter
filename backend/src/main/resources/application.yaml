@@ -1,10 +1,10 @@
 spring:
   application:
-    name: "emporixstarter"
+    name: "backend"
   threads:
     virtual:
       enabled: true
-emporixstarter:
+backend:
   cors-domains: [ ]
   users:
     actuator:

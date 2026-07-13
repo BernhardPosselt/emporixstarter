@@ -1,0 +1,27 @@
+services:
+  application:
+    build:
+      dockerfile: backend/Containerfile
+      context: ..
+    ports:
+      - "8080:8080"
+      # debug ports for local development
+      - "5005:5005"
+    environment:
+      SPRING_PROFILES_ACTIVE: "dev"
+    command: [
+      "java",
+      "-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n",
+      "-Djava.security.egd=file:/dev/./urandom",
+      "-Dnetworkaddress.cache.ttl=0",
+      "-server",
+      "-XX:MaxRAMPercentage=99",
+      "-Xms256M",
+      "-jar", "/home/server/server.jar",
+      "--backend.users.actuator.password=developmentpassword"
+    ]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5

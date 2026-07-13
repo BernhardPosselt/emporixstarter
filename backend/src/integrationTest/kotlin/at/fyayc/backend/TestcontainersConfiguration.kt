@@ -1,4 +1,4 @@
-package at.fyayc.emporixstarter
+package at.fyayc.backend
 
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean

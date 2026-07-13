@@ -1,4 +1,4 @@
-package at.fyayc.emporixstarter.products
+package at.fyayc.backend.products
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag

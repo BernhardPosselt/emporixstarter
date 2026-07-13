@@ -12,7 +12,7 @@ abstract class CreateDevProfile : DefaultTask() {
     @TaskAction
     fun run() {
         val configYaml = """
-        emporixstarter:
+        backend:
           users:
             actuator:
               password: "developmentpassword"

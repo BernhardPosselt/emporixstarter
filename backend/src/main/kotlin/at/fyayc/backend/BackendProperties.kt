@@ -1,9 +1,9 @@
-package at.fyayc.emporixstarter
+package at.fyayc.backend
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties(prefix = "emporixstarter")
-data class Properties(
+@ConfigurationProperties(prefix = "backdend")
+data class BackendProperties(
     val users: Users,
     val corsDomains: List<String>,
 ) {

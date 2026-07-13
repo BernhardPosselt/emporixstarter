@@ -8,7 +8,7 @@ plugins {
     id("at.fyayc.kotlin-conventions")
 }
 
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 val mockitoAgent = configurations.register("mockitoAgent")
 dependencies {
