@@ -71,18 +71,11 @@ testImplementation(testFixtures("at.fyayc:common"))
 
 ### TODO
 
-* Containerization
 * Devcontainers
-* CI
-* Spring Boot Setup
 * Spring Security
-* Spring Integration Test Template
-* Spring Unit Test Template
-* Spring Controller MVC Test Template
 * Emporix API Client extension
 * Push to Repo
 * Static Analysis
 * Formatter
-* Github Actions CI Pipeline
 * K8s setup
 * Think about authorization/OAuth
