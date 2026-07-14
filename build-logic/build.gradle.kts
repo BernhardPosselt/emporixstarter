@@ -14,6 +14,10 @@ dependencies {
     implementation(libs.plugins.kotlin.jvm.toDependency())
 }
 
+kotlin {
+    jvmToolchain(25)
+}
+
 // see https://github.com/gradle/gradle/issues/17963#issuecomment-939207895
 private fun Provider<PluginDependency>.toDependency(): String {
     val t = get()

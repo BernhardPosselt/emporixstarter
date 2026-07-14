@@ -19,14 +19,9 @@ jacoco {
 }
 
 kotlin {
+    jvmToolchain(25)
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict")
-    }
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -49,7 +44,7 @@ repositories {
 val junitTags = listOf("integration", "migration")
 testing {
     suites {
-        val test = named<JvmTestSuite>("test").configure {
+        named<JvmTestSuite>("test").configure {
             useJUnitJupiter()
             targets.all {
                 testTask.configure {

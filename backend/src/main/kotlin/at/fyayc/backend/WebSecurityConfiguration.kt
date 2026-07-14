@@ -1,5 +1,6 @@
 package at.fyayc.backend
 
+import org.slf4j.LoggerFactory
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,9 +14,13 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration(proxyBeanMethods = false)
 class WebSecurityConfiguration {
+    private val log = LoggerFactory.getLogger(this::class.java)
+
     @Bean
     fun passwordEncounter() = PasswordEncoderFactories.createDelegatingPasswordEncoder()
 
@@ -73,5 +78,21 @@ class WebSecurityConfiguration {
             }
         }
         return http.build()
+    }
+
+    @Bean
+    fun corsConfigurer(locationServiceProperties: BackendProperties): WebMvcConfigurer {
+        val domains = locationServiceProperties.corsDomains.map(String::trim)
+        log.debug("Whitelisting CORS domains: ${domains.joinToString(", ")}")
+
+        return object : WebMvcConfigurer {
+            override fun addCorsMappings(registry: CorsRegistry) {
+                registry.addMapping("/**")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+                    .allowedHeaders("*") //
+                    .allowedOrigins(*domains.toTypedArray())
+                    .allowCredentials(true)
+            }
+        }
     }
 }
