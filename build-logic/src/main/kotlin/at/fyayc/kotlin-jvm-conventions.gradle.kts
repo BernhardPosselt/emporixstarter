@@ -1,21 +1,14 @@
 package at.fyayc
 
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.kotlin.dsl.withType
 
 group = "at.fyayc"
 
 plugins {
-    jacoco
     id("org.jetbrains.kotlin.jvm")
-    id("com.github.ben-manes.versions")
+    id("at.fyayc.base-conventions")
     `java-test-fixtures`
     `jvm-test-suite`
-}
-
-jacoco {
-    toolVersion = "0.8.14"
 }
 
 kotlin {
@@ -23,10 +16,6 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict")
     }
-}
-
-repositories {
-    mavenCentral()
 }
 
 /**
@@ -86,16 +75,5 @@ testing {
                 extendsFrom(configurations.testCompileOnly)
             }
         }
-    }
-}
-
-// do not recommend unstable versions to upgrade to
-tasks.withType<DependencyUpdatesTask> {
-    rejectVersionIf {
-        val version = candidate.version
-        val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
-        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-        val isStable = stableKeyword || regex.matches(version)
-        isStable.not()
     }
 }

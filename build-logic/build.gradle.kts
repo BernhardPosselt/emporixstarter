@@ -5,13 +5,14 @@ plugins {
 }
 
 repositories {
-    gradlePluginPortal()
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
     implementation(libs.plugins.versions.toDependency())
     implementation(libs.plugins.kotlin.jvm.toDependency())
+    implementation(libs.plugins.detekt.toDependency())
 }
 
 kotlin {

@@ -1,5 +1,5 @@
 plugins {
-    id("at.fyayc.kotlin-conventions")
+    id("at.fyayc.kotlin-jvm-conventions")
 }
 
 group = "at.fyayc"

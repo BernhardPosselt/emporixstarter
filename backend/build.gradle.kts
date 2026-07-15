@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.boot.dependency)
     alias(libs.plugins.kotlin.serialization)
-    id("at.fyayc.kotlin-conventions")
+    id("at.fyayc.kotlin-jvm-conventions")
 }
 
 version = "0.0.1"
