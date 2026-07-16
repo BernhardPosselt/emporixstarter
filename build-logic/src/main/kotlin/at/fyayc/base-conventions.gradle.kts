@@ -6,12 +6,11 @@ import org.gradle.kotlin.dsl.withType
 group = "at.fyayc"
 
 // Workaround for https://github.com/gradle/gradle/issues/15383
-val lib = extensions.getByType<VersionCatalogsExtension>().named("libs")
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 plugins {
     jacoco
     id("com.github.ben-manes.versions")
-    id("dev.detekt")
 }
 
 jacoco {
@@ -32,14 +31,3 @@ tasks.withType<DependencyUpdatesTask> {
         isStable.not()
     }
 }
-
-// if you want to configure detect, uncomment the remaining lines
-/*
-dependencies {
-    detektPlugins(lib.findLibrary("detekt-formatting").get())
-}
-
-detekt {
-    config.setFrom(resources.text.fromUri(javaClass.classLoader.getResource("detekt.yml")!!.toURI()).asFile())
-}
-*/
