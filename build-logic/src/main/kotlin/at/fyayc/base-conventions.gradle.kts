@@ -1,11 +1,12 @@
 package at.fyayc
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import gradle.kotlin.dsl.accessors._9c509d200d0c750b9a5d0c45e796dc09.main
-import gradle.kotlin.dsl.accessors._9c509d200d0c750b9a5d0c45e796dc09.sourceSets
 import org.gradle.kotlin.dsl.withType
 
 group = "at.fyayc"
+
+// Workaround for https://github.com/gradle/gradle/issues/15383
+val lib = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 plugins {
     jacoco
@@ -32,6 +33,13 @@ tasks.withType<DependencyUpdatesTask> {
     }
 }
 
-detekt {
-    //config.setFrom(resources.text.fromFile("detekt.yml"))
+// if you want to configure detect, uncomment the remaining lines
+/*
+dependencies {
+    detektPlugins(lib.findLibrary("detekt-formatting").get())
 }
+
+detekt {
+    config.setFrom(resources.text.fromUri(javaClass.classLoader.getResource("detekt.yml")!!.toURI()).asFile())
+}
+*/

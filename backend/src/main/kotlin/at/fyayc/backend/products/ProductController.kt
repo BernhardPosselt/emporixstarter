@@ -21,3 +21,11 @@ class ProductController(
         return ResponseEntity.ok(Product(id))
     }
 }
+
+fun test() {
+
+}
+
+fun test1() {
+
+}
