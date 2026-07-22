@@ -23,7 +23,6 @@ kotlin {
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-opt-in=kotlin.js.ExperimentalJsExport",
             "-opt-in=kotlin.time.ExperimentalTime",
-            "-Xwhen-guards",
         )
     }
 
@@ -63,12 +62,16 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
 
         jsMain.dependencies {
             implementation(libs.kotlin.plain.objects)
             implementation(libs.kotlinx.coroutines.js)
             implementation(libs.ktor.client.js)
+            implementation(project.dependencies.enforcedPlatform(libs.kotlin.wrappers))
+            implementation(libs.kotlin.wrappers.js)
+            implementation(libs.kotlin.wrappers.web)
         }
 
         jsTest.dependencies {
