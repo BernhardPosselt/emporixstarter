@@ -27,13 +27,9 @@ kotlin {
     }
 
     js {
-        compilerOptions {
-            freeCompilerArgs.add(
-                "-Xenable-suspend-function-exporting",
-            )
-        }
         useEsModules()
         nodejs {
+
         }
         compilerOptions {
             target = "es2015"

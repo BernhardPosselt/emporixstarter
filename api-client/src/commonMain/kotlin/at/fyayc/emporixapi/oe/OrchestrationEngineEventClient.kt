@@ -4,10 +4,9 @@ import at.fyayc.emporixapi.HmacSignature
 import at.fyayc.emporixapi.withHmac
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.request.setBody
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.*
+
 
 class OrchestrationEngineEventClient(
     val secret: String,

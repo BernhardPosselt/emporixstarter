@@ -1,24 +1,10 @@
 package at.fyayc.emporixapi.oe
 
-import io.ktor.util.reflect.TypeInfo
-import io.ktor.util.reflect.typeInfo
+import io.ktor.util.reflect.*
 
-class OrchestrationEngineEvent<out T : Any> @PublishedApi internal constructor(
+abstract class OrchestrationEngineEvent<out T : Any>(
     val id: String,
     val type: String,
     val payload: T,
     val typeInfo: TypeInfo,
-) {
-    companion object {
-        inline fun <reified T : Any> create(
-            id: String,
-            type: String,
-            payload: T,
-        ) = OrchestrationEngineEvent(
-            id = id,
-            type = type,
-            payload = payload,
-            typeInfo = typeInfo<T>()
-        )
-    }
-}
+)
