@@ -1,10 +1,10 @@
-package at.fyayc.emporixapi.products
+package at.fyayc.emporixapi.wrappers
 
 import kotlinx.js.JsPlainObject
 
 @JsPlainObject
 @JsExport
 external interface ApiConfiguration {
-    val endpoint: String
+    val baseUrl: String
     val tenant: String
 }

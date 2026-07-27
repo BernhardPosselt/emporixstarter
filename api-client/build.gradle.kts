@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.versions)
     alias(libs.plugins.npm.publish)
+    alias(libs.plugins.kotlin.plain.objects)
 }
 
 group = "at.fyayc"
