@@ -4,6 +4,7 @@ import {
     HelloWorldEvent,
     OEClient,
     type OEConfig,
+    OEResponse,
 } from "../build/js/packages/emporix-api-client/kotlin/emporix-api-client.mjs"
 
 const config: ApiConfiguration = {
@@ -28,3 +29,8 @@ const result = await client.publish(new HelloWorldEvent(
         test: ''
     },
 ));
+if (result instanceof OEResponse.OEOkResponse) {
+    console.log(result.body)
+} else {
+    console.log("error code " + result.statusCode)
+}
