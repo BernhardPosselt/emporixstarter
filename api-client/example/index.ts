@@ -33,7 +33,7 @@ const result = await client.publish(new HelloWorldEvent(
         test: ''
     },
 ));
-if (result instanceof OEResponse.OEOkResponse) {
+if (result instanceof OEResponse.Ok) {
     console.log(result.body)
 } else {
     console.log("error code " + result.statusCode)
