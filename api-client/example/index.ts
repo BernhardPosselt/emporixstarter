@@ -1,3 +1,7 @@
+// example showing emporix api client in TS
+// to run this file, define an OE_SECRET env variable, then execute this file using:
+// ts-node index.ts
+
 import {
     type ApiConfiguration,
     EmporixHttpClient,
