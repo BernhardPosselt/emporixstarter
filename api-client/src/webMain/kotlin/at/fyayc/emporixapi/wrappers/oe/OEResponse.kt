@@ -1,8 +1,11 @@
 package at.fyayc.emporixapi.wrappers.oe
 
 import at.fyayc.emporixapi.wrappers.HttpResponse
+import at.fyayc.emporixapi.wrappers.UnhandledResponseCode
+import io.ktor.client.call.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
 
 @JsExport
 sealed class OEResponse(override val statusCode: Int) : HttpResponse {
@@ -23,4 +26,10 @@ sealed class OEResponse(override val statusCode: Int) : HttpResponse {
     class OEForbiddenResponse : OEResponse(401)
 }
 
-
+suspend fun io.ktor.client.statement.HttpResponse.toJs() =
+    when (val code = status.value) {
+        200 -> OEResponse.OEOkResponse(code, body<OEResponse.OEOkResponse.Body>())
+        400 -> OEResponse.OEBadRequestResponse()
+        401 -> OEResponse.OEForbiddenResponse()
+        else -> throw UnhandledResponseCode(code)
+    }
