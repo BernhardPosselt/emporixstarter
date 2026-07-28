@@ -11,7 +11,6 @@ interface HttpResponse {
 @JsExport
 data class ApiResponse<T>(override val statusCode: Int, val body: T) : HttpResponse
 
-// note that ApiError and toJS() are generic solutions; you can create your own ApiError subclass with a typed body instead
 @JsExport
 open class ApiError(override val statusCode: Int, message: String) : HttpResponse, RuntimeException(message = message)
 
