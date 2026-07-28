@@ -4,6 +4,7 @@
 
 import {
     type ApiConfiguration,
+    ApiError,
     EmporixHttpClient,
     HelloWorldEvent,
     OEClient,
@@ -27,9 +28,16 @@ const configOe: OEConfig = {
 const http = new EmporixHttpClient();
 
 const client = new OEClient(http, configOe)
-const result = await client.publish(new HelloWorldEvent(
-    '3', {
-        test: ''
-    },
-));
-console.log(result.body)
+try {
+    const result = await client.publish(new HelloWorldEvent(
+        '3', {
+            test: ''
+        },
+    ));
+    console.log(result.body)
+
+} catch (e) {
+    if (e instanceof ApiError) {
+        console.log(e.message)
+    }
+}
