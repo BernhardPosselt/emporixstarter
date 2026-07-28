@@ -1,5 +1,8 @@
 package at.fyayc.emporixapi.wrappers.oe.events
 
-interface SerializableEvent<T> {
-    fun toKt(): T
+import at.fyayc.emporixapi.oe.events.OrchestrationEngineEvent
+
+interface SerializableEvent<out T : Any> {
+    @JsExport.Ignore
+    fun toKt(): OrchestrationEngineEvent<T>
 }

@@ -1,20 +1,24 @@
 import {
-    ApiConfiguration,
+    type ApiConfiguration,
     EmporixHttpClient,
     HelloWorldEvent,
     OEClient,
-    OEConfig,
+    type OEConfig,
 } from "../build/js/packages/emporix-api-client/kotlin/emporix-api-client.mjs"
 
 const config: ApiConfiguration = {
     baseUrl: 'https://events.emporix.io/e/src_m74y2vqhlh66pp',
     tenant: 'fyaycff1'
 }
-
+declare var process: {
+    env: {
+        OE_SECRET: string
+    }
+}
 const configOe: OEConfig = {
-    baseUrl: 'https://events.emporix.io/',
-    secret: '3%3QW1#D3*Z$',
-    source: 'src_m74y2vqhlh66pp',
+    baseUrl: 'https://events.emporix.io/e/src_m74y2vqhlh66pp',
+    secret: process.env.OE_SECRET,
+    source: 'nodejs test',
 }
 const http = new EmporixHttpClient();
 

@@ -2,9 +2,8 @@ package at.fyayc.emporixapi.wrappers.oe
 
 import at.fyayc.emporixapi.oe.OrchestrationEngineEventClient
 import at.fyayc.emporixapi.wrappers.EmporixHttpClient
-import at.fyayc.emporixapi.wrappers.oe.events.HelloWorldEvent
 import at.fyayc.emporixapi.wrappers.oe.events.OEEvent
-import at.fyayc.emporixapi.wrappers.oe.events.OtherEventEvent
+import at.fyayc.emporixapi.wrappers.oe.events.SerializableEvent
 import io.ktor.client.statement.*
 import kotlinx.js.JsPlainObject
 
@@ -22,8 +21,8 @@ fun HttpResponse.toJs(): OEClientResponse {
 
 @JsExport
 class OEClient(
-    val httpClient: EmporixHttpClient,
-    val config: OEConfig
+    httpClient: EmporixHttpClient,
+    config: OEConfig
 ) {
     private val client = OrchestrationEngineEventClient(
         secret = config.secret,
@@ -32,15 +31,12 @@ class OEClient(
         source = config.source,
     )
 
-    suspend fun publish(event: OEEvent): OEClientResponse {
-        when (event) {
-            is HelloWorldEvent,
-            is OtherEventEvent -> {
-                val result = client.publish(event.toKt())
-                return result.toJs()
-            }
-
-            else -> throw IllegalArgumentException("Not a supported event")
-        }
+    suspend fun <E, T : Any, K : Any> publish(event: E): OEClientResponse
+            where E : OEEvent<T>,
+                  E : SerializableEvent<K> {
+        val result = client.publish(event.toKt())
+        println(result.status.value)
+        println(result.bodyAsText())
+        return result.toJs()
     }
 }

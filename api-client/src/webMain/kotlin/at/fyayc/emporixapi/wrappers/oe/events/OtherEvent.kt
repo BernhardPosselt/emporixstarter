@@ -12,7 +12,7 @@ external interface OtherEvent {
 class OtherEventEvent(
     override val id: String,
     override val body: OtherEvent,
-) : OEEvent, SerializableEvent<at.fyayc.emporixapi.oe.events.OtherEvent> {
+) : OEEvent<OtherEvent>, SerializableEvent<at.fyayc.emporixapi.oe.events.OtherEvent.Body> {
     @JsExport.Ignore
     override fun toKt() = at.fyayc.emporixapi.oe.events.OtherEvent(
         id = id,

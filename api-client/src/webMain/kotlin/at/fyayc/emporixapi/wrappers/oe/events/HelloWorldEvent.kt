@@ -13,7 +13,7 @@ external interface HelloWorld {
 class HelloWorldEvent(
     override val id: String,
     override val body: HelloWorld,
-) : OEEvent, SerializableEvent<HelloWorldEvent> {
+) : OEEvent<HelloWorld>, SerializableEvent<HelloWorldEvent.Body> {
     @JsExport.Ignore
     override fun toKt() = HelloWorldEvent(
         id = id,
