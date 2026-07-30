@@ -1,7 +1,6 @@
 package at.fyayc.emporixapi.products
 
-import at.fyayc.emporixapi.Configuration
-import io.ktor.client.request.bearerAuth
+import io.ktor.client.*
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.*
@@ -9,19 +8,17 @@ import io.ktor.http.headers
 
 
 class ProductClient(
-    private val configuration: Configuration,
-) : IProductClient {
-    private val client = configuration.client
-    private val tenant = configuration.tenant
-
-    override suspend fun createProduct(
+    private val client: HttpClient,
+    private val endpoint: String,
+    private val tenant: String,
+) {
+    suspend fun createProduct(
         product: CreateProduct,
-        token: String,
         skipVariantGeneration: Boolean,
         doIndex: Boolean,
         contentLanguage: String?,
     ) {
-        val result = client.post(configuration.endpoint) {
+        val result = client.post(endpoint) {
             url {
                 appendPathSegments("product", tenant, "products")
                 parameters {
@@ -38,7 +35,6 @@ class ProductClient(
                 contentLanguage?.let {
                     append(HttpHeaders.ContentLanguage, it)
                 }
-                bearerAuth(token)
                 setBody(product)
             }
         }
