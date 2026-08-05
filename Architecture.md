@@ -90,7 +90,7 @@ These groups need to be synced regularly.
 
 ### Anon Token
 
-1. Requests to the BFF without session cookies will lease a new anonymous token in the BFF
+1. Requests to the BFF that require a session like adding a product to a cart without session cookies will lease a new anonymous token in the BFF
 2. That token is then stored in a new session
 3. The client receives a session cookie
 
