@@ -88,4 +88,46 @@ These groups need to be synced regularly.
 
 ## Solution Proposal
 
+### Anon Token
+
+1. Requests to the BFF without session cookies will lease a new anonymous token in the BFF
+2. That token is then stored in a new session
+3. The client receives a session cookie
+
+### Login
+
+There are 2 possibilities:
+
+#### Customer Login
+
+1. If the user clicks on login, the FE presents them a login page
+2. The login page sends the users anon token and login data to Emporix to lease a new customer token
+3. The BFF uses the tokens to retrieve the users session data and groups and stores them in the user's session
+4. Next a session cookie is issued that lives shorter than the refresh token
+
+#### SSO
+
+**TODO**: figure out if SSO supports cart merging since no anonymous tokens are used
+
+1. If the user clicks on login, the FE redirects them to the SSO login page
+2. The login page redirects back to Emporix which issues tokens and redirects back to the FE with the tokens
+3. The FE then uses the tokens to start a new session in the BFF
+4. The BFF merges the customer cart with the anonymous cart
+5. The BFF uses the tokens to retrieve the users session data and groups and stores them in the user's session
+6. Next a session cookie is issued that lives shorter than the refresh token
+
+### Logout
+
+1. If the user clicks logout, the BFF deletes their session cookie and the logout customer API is called
+2. The customer is then issued an anonymous token session cookie
+
+### Sessions
+
+* Sessions are stored in Redis or Valkey; the reason for that is that Redis supports sessions out of the box and both Spring Web and Reactive support it
+* A users session is updated once they log in or when they change session attributes like preferred language
+* A user session is also updated once a **customer.updated** event is fired in the OE (or other events that change users and groups); this requires Emporix to call our APIs
+
+
+### CSRF
+
 TODO
