@@ -1,6 +1,6 @@
 package at.fyayc.emporixapi.wrappers
 
-import at.fyayc.emporixapi.registerInterceptors
+import at.fyayc.emporixapi.http.registerInterceptors
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*

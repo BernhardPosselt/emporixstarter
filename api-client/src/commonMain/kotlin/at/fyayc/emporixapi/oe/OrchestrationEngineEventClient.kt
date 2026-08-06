@@ -1,8 +1,8 @@
 package at.fyayc.emporixapi.oe
 
-import at.fyayc.emporixapi.HmacSignature
+import at.fyayc.emporixapi.http.HmacSignature
+import at.fyayc.emporixapi.http.withHmac
 import at.fyayc.emporixapi.oe.events.OrchestrationEngineEvent
-import at.fyayc.emporixapi.withHmac
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

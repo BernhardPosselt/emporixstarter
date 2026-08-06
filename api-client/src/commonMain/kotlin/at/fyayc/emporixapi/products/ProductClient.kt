@@ -1,5 +1,9 @@
 package at.fyayc.emporixapi.products
 
+import at.fyayc.emporixapi.http.ApiConfig
+import at.fyayc.emporixapi.http.TokenType
+import at.fyayc.emporixapi.http.parseOrThrow
+import at.fyayc.emporixapi.http.withToken
 import io.ktor.client.*
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -9,8 +13,7 @@ import io.ktor.http.headers
 
 class ProductClient(
     private val client: HttpClient,
-    private val endpoint: String,
-    private val tenant: String,
+    private val apiConfig: ApiConfig,
 ) {
     suspend fun createProduct(
         product: CreateProduct,
@@ -18,9 +21,9 @@ class ProductClient(
         doIndex: Boolean,
         contentLanguage: String?,
     ) {
-        val result = client.post(endpoint) {
+        client.post(apiConfig.baseUrl) {
             url {
-                appendPathSegments("product", tenant, "products")
+                appendPathSegments("product", apiConfig.tenant, "products")
                 parameters {
                     if (doIndex) {
                         append("doIndex", "true")
@@ -37,6 +40,8 @@ class ProductClient(
                 }
                 setBody(product)
             }
-        }
+            withToken(TokenType.SERVICE)
+        }.parseOrThrow<Unit>()
     }
 }
+

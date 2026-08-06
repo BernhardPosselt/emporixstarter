@@ -1,7 +1,11 @@
-package at.fyayc.emporixapi.wrappers
+package at.fyayc.emporixapi.http
 
 import io.ktor.client.call.*
 import io.ktor.client.statement.*
+import kotlin.js.JsExport
+
+@JsExport
+data class ApiResponse<T>(override val statusCode: Int, val body: T) : StatusCode
 
 
 /**
@@ -9,7 +13,7 @@ import io.ktor.client.statement.*
  * call this function like:
  * response.toJs { if(status.value == 400) TypedApiError(body<TheType>()) else {...}}
  */
-suspend inline fun <reified T> io.ktor.client.statement.HttpResponse.toJs(
+suspend inline fun <reified T> io.ktor.client.statement.HttpResponse.parseOrThrow(
     errorHandler: suspend io.ktor.client.statement.HttpResponse.() -> ApiError = {
         ApiError(
             status.value,
