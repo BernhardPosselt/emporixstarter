@@ -107,8 +107,6 @@ There are 2 possibilities:
 
 #### SSO
 
-**TODO**: figure out if SSO supports cart merging since no anonymous tokens are used
-
 1. If the user clicks on login, the FE redirects them to the SSO login page
 2. The login page redirects back to Emporix which issues tokens and redirects back to the FE with the tokens
 3. The FE then uses the tokens to start a new session in the BFF
@@ -130,4 +128,36 @@ There are 2 possibilities:
 
 ### CSRF
 
-TODO
+CSRF is an attack to force a user to perform an authenticated request. This works on the back of cookies, because cookies are always sent with each request to a target domain. By default, the browser only allows a small subset of requests to bypass CORS (which is an attempt to fix this issue)
+
+This means the following things:
+
+* GET requests must never mutate anything
+* POST requests with form data or application url encoded requests should not be allowed
+* Additional headers can be required
+
+In Spring, there are 2 ways that can be combined to solve this: a special **/csrf** endpoint:
+
+```kt
+@RestController
+class CsrfController {
+    @GetMapping("/csrf")
+    fun csrf(csrfToken: CsrfToken): CsrfToken {
+        return csrfToken
+    }
+}
+```
+
+and a controller advice that adds the token as a header to each successful request:
+
+```kt
+@ControllerAdvice
+class CsrfControllerAdvice {
+	@ModelAttribute
+	fun getCsrfToken(response: HttpServletResponse, csrfToken: CsrfToken) {
+		response.setHeader(csrfToken.headerName, csrfToken.token)
+	}
+}
+```
+
+The token is then sent as **X-CSRF-TOKEN** header to the client. On the server side, the csrf token is stored inside the session and changes each time it is sent to avoid BREACH attacks (=guessing the token in encrypted requests by adding data to the website and check response size when compression is enabled; smaller response size: I guess part of the token)
