@@ -1,0 +1,13 @@
+services:
+  redis:
+    image: "redis:8.10.0-alpine"
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "/etc/redis/redis.conf" ]
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5

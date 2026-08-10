@@ -13,7 +13,7 @@ import kotlin.io.encoding.Base64
 private const val HMAC_SIGNATURE = "hmacSignature"
 private const val TOKEN_TYPE = "tokenType"
 
-internal fun HttpClient.registerInterceptors(
+fun HttpClient.registerInterceptors(
     sessionTokenStorage: TokenStorage,
     serviceTokenStorage: TokenStorage,
 ) {

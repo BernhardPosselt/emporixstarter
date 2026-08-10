@@ -47,14 +47,14 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.ktor.client.logging)
-            implementation(libs.ktor.client.json)
-            implementation(libs.ktor.client.negotiation)
-            implementation(libs.ktor.client.core)
-            implementation(libs.kotlinx.serialization.core)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.coroutines)
+            api(libs.ktor.client.logging)
+            api(libs.ktor.client.json)
+            api(libs.ktor.client.negotiation)
+            api(libs.ktor.client.core)
+            api(libs.kotlinx.serialization.core)
+            api(libs.kotlinx.serialization.json)
+            api(libs.kotlinx.datetime)
+            api(libs.kotlinx.coroutines)
         }
 
         commonTest.dependencies {
@@ -76,7 +76,7 @@ kotlin {
         }
 
         jvmMain.dependencies {
-            implementation(libs.ktor.client.java)
+            api(libs.ktor.client.java)
         }
 
         jvmTest.dependencies {

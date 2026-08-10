@@ -8,6 +8,7 @@ data class BackendProperties(
     val corsDomains: List<String>,
     val oauth: OAuth,
     val tenant: String,
+    val emporixApi: EmporixApi
 ) {
     data class Users(val actuator: User) {
         data class User(val login: String, val password: String)
@@ -17,5 +18,10 @@ data class BackendProperties(
         val clientId: String,
         val clientSecret: String,
         val clientScopes: Map<String, String>,
+        val refreshMarginInSeconds: Int,
+    )
+
+    data class EmporixApi(
+        val timeoutMillis: Long,
     )
 }

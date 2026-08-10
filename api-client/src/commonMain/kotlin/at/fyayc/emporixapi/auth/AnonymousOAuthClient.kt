@@ -7,30 +7,36 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlin.time.Clock
 
-class CustomerOauthClient(
+class AnonymousOAuthClient(
     private val client: HttpClient,
     private val apiConfig: ApiConfig,
 ) {
-    suspend fun login(credentials: CustomerCredentials): LeasedSessionToken {
-        val response = client.post(apiConfig.baseUrl) {
+    suspend fun login(): LeasedSessionToken {
+        val response = client.get(apiConfig.baseUrl) {
             url {
-                appendPathSegments("customer", apiConfig.tenant, "login")
+                appendPathSegments("customerlogin", "auth", "anonymous", "login")
+                parameters {
+                    append("tenant", apiConfig.tenant)
+                    append("client_id", apiConfig.clientId)
+                }
             }
-            setBody(credentials)
             contentType(ContentType.Application.Json)
         }.parseOrThrow<EmporixSessionToken>()
         return LeasedSessionToken(
             createdAt = Clock.System.now(),
             token = response.body,
-            type = SessionTokenType.CUSTOMER,
+            type = SessionTokenType.ANONYMOUS,
         )
     }
 
     suspend fun refresh(token: LeasedSessionToken): LeasedSessionToken {
         val response = client.get(apiConfig.baseUrl) {
             url {
-                appendPathSegments("customer", apiConfig.tenant, "refreshauthtoken")
+                appendPathSegments("customerlogin", "auth", "anonymous", "refresh")
                 parameters {
+                    append("tenant", apiConfig.tenant)
+                    append("client_id", apiConfig.clientId)
+                    append("anonymous_token", token.token.accessToken)
                     append("refresh_token", token.token.refreshToken)
                 }
             }
@@ -39,7 +45,7 @@ class CustomerOauthClient(
         return LeasedSessionToken(
             createdAt = Clock.System.now(),
             token = response.body,
-            type = SessionTokenType.CUSTOMER,
+            type = SessionTokenType.ANONYMOUS,
         )
     }
 }
