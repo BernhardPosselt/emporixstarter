@@ -14,7 +14,7 @@ data class ApiResponse<T>(override val statusCode: Int, val body: T) : StatusCod
  * response.toJs { if(status.value == 400) TypedApiError(body<TheType>()) else {...}}
  */
 suspend inline fun <reified T> HttpResponse.parseOrThrow(
-    errorHandler: suspend HttpResponse.() -> ApiError = {
+    noinline errorHandler: suspend HttpResponse.() -> ApiError = {
         ApiError(
             status.value,
             bodyAsText()
