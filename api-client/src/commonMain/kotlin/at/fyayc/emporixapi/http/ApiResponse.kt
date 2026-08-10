@@ -13,8 +13,8 @@ data class ApiResponse<T>(override val statusCode: Int, val body: T) : StatusCod
  * call this function like:
  * response.toJs { if(status.value == 400) TypedApiError(body<TheType>()) else {...}}
  */
-suspend inline fun <reified T> io.ktor.client.statement.HttpResponse.parseOrThrow(
-    errorHandler: suspend io.ktor.client.statement.HttpResponse.() -> ApiError = {
+suspend inline fun <reified T> HttpResponse.parseOrThrow(
+    errorHandler: suspend HttpResponse.() -> ApiError = {
         ApiError(
             status.value,
             bodyAsText()

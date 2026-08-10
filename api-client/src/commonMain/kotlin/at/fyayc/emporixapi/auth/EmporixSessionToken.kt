@@ -6,17 +6,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EmporixSessionToken(
     @SerialName("token_type")
-    override val tokenType: String?,
+    override val tokenType: String,
     @SerialName("access_token")
-    override val accessToken: String?,
+    override val accessToken: String,
     @SerialName("expires_in")
-    override val expiresIn: Int?,
+    override val expiresIn: Int,
     @SerialName("refresh_token")
-    override val refreshToken: String?,
+    override val refreshToken: String,
     @SerialName("refresh_token_expires_in")
-    override val refreshTokenExpiresIn: Int?,
+    override val refreshTokenExpiresIn: Int,
     @SerialName("sessionId")
-    val sessionId: String?,
+    val sessionId: String,
     @SerialName("scope")
-    override val scope: String?,
+    override val scope: String,
 ) : OAuthToken
