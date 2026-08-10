@@ -9,7 +9,7 @@ abstract class BaseSessionTokenStorage(
     override suspend fun lockingRefresh(token: LeasedSessionToken): LeasedSessionToken {
         return distributedLock.locking("checkSessionTokenRefresh:${token.type}:${token.token.accessToken}") {
             val currentToken = this.load()
-            if (tokenExpired(currentToken)) {
+            if (isTokenExpired(currentToken)) {
                 distributedLock.locking("sessionTokenRefresh:${token.type}:${token.token.accessToken}") {
                     when (token.type) {
                         SessionTokenType.CUSTOMER -> customerOauthClient.refresh(token)

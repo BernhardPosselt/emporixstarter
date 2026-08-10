@@ -8,7 +8,7 @@ abstract class BaseTokenStorage<T : OAuthToken, LT : LeasedToken<T>>(
 ) : TokenStorage {
     override suspend fun retrieve(): String? {
         val currentToken = load()
-        return if (tokenExpired(currentToken)) {
+        return if (isTokenExpired(currentToken)) {
             val newToken = lockingRefresh(currentToken)
             store(newToken)
             newToken.token.accessToken
@@ -17,7 +17,7 @@ abstract class BaseTokenStorage<T : OAuthToken, LT : LeasedToken<T>>(
         }
     }
 
-    protected fun tokenExpired(token: LT): Boolean =
+    protected fun isTokenExpired(token: LT): Boolean =
         token.createdAt.plus(marginInSeconds.seconds) > Clock.System.now()
 
     protected abstract suspend fun load(): LT
