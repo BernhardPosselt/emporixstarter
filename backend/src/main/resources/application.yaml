@@ -6,6 +6,12 @@ spring:
       enabled: true
 backend:
   cors-domains: [ ]
+  oauth:
+    # Emporix API
+    client-id: "XH5ej9Tpdlg1SaI1vosMSowEYyvsTMsz1iGIi3B3qaYKIVBU"
+    client-scopes:
+      tenant: "${backend.tenant}"
   users:
     actuator:
       login: "actuator"
+  tenant: "fyaycff1"

@@ -13,6 +13,8 @@ abstract class CreateDevProfile : DefaultTask() {
     fun run() {
         val configYaml = """
         backend:
+          oauth:
+            client-secret: "CHANGEME"
           users:
             actuator:
               password: "developmentpassword"

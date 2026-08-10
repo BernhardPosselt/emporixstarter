@@ -18,7 +18,8 @@ import org.springframework.boot.runApplication
 @OpenAPIDefinition(
     info = Info(title = "Emporix Service API", version = "v1"),
 )
-class BackendApplication
+class BackendApplication {
+}
 
 fun main(args: Array<String>) {
     runApplication<BackendApplication>(*args)

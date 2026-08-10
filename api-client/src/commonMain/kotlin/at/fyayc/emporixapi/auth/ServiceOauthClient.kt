@@ -11,8 +11,7 @@ class ServiceOauthClient(
     private val client: HttpClient,
     private val apiConfig: ApiConfig,
 ) {
-    suspend fun login(additionalScopes: List<String>): LeasedServiceToken {
-        val scopes = additionalScopes + "tenant=${apiConfig.tenant}"
+    suspend fun login(): LeasedServiceToken {
         val response = client.post(apiConfig.baseUrl) {
             url {
                 appendPathSegments("oauth", "token")
@@ -21,7 +20,10 @@ class ServiceOauthClient(
                     append("client_id", apiConfig.clientId)
                     append("client_secret", apiConfig.clientSecret)
                     append("grant_type", "client_credentials")
-                    append("scope", scopes.joinToString(" "))
+                    append(
+                        "scope", apiConfig.clientScopes
+                            .entries
+                            .joinToString(" ") { (key, value) -> "$key=$value" })
                 }
             }
             contentType(ContentType.Application.Json)
@@ -31,9 +33,4 @@ class ServiceOauthClient(
             token = response.body,
         )
     }
-
-    suspend fun refresh(token: LeasedServiceToken): LeasedServiceToken =
-        login(
-            token.token.scope.split(" ")
-                .filterNot { it.startsWith("tentant=") })
 }
