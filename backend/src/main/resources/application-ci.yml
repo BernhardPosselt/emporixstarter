@@ -1,4 +1,6 @@
 backend:
+  oauth:
+    client-secret: "developmentpassword"
   users:
     actuator:
       password: "developmentpassword"
