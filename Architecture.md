@@ -88,6 +88,10 @@ These groups need to be synced regularly.
 
 ## Solution Proposal
 
+### Token Locking
+
+All requests to request and refresh token need to have a distributed lock to prevent requesting more than one token at once. This can be implemented using [distributed locks on Redis](https://docs.spring.io/spring-integration/reference/distributed-locks.html) and double-checked locking
+
 ### Anon Token
 
 1. Requests to the BFF that require a session like adding a product to a cart without session cookies will lease a new anonymous token in the BFF

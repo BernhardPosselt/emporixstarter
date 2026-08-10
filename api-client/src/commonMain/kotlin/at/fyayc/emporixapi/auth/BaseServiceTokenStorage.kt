@@ -6,8 +6,15 @@ abstract class BaseServiceTokenStorage(
     marginInSeconds: Int,
 ) : BaseTokenStorage<EmporixServiceToken, LeasedServiceToken>(marginInSeconds) {
     override suspend fun lockingRefresh(token: LeasedServiceToken): LeasedServiceToken {
-        return distributedLock.locking("SERVICE:${token.token.accessToken}") {
-            oauthClient.refresh(token)
+        return distributedLock.locking("checkServiceTokenRefresh:${token.token.accessToken}") {
+            val currentToken = this.load()
+            if (tokenExpired(currentToken)) {
+                distributedLock.locking("serviceTokenRefresh:${token.token.accessToken}") {
+                    oauthClient.refresh(token)
+                }
+            } else {
+                currentToken
+            }
         }
     }
 }
