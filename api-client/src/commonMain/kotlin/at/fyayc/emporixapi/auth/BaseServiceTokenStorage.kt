@@ -12,7 +12,7 @@ abstract class BaseServiceTokenStorage(
 
     /**
      * Assumptions:
-     * * You can lease more than one valid token
+     * * You can lease more than one valid service token
      * * The service token is stored in memory and is leased on server start, so we do not need distributed locking
      */
     override suspend fun lockingRefresh(token: LeasedServiceToken): LeasedServiceToken {
