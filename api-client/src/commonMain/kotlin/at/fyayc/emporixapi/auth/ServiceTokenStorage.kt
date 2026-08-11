@@ -8,18 +8,21 @@ class ServiceTokenStorage(
     marginInSeconds: Int,
 ) : BaseTokenStorage<EmporixServiceToken, LeasedServiceToken>(marginInSeconds) {
     private val mutex = Mutex()
-    private val mutex2 = Mutex()
     private var token: LeasedServiceToken? = null
 
     override suspend fun load(): LeasedServiceToken {
-        val token = token
-        return if (token != null) {
-            token
-        } else {
-            val new = newToken()
-            store(new)
-            new
-        }
+        val curr = this.token
+        return curr
+            ?: mutex.withLock {
+                val token = this.token
+                if (token == null) {
+                    val new = oauthClient.login()
+                    store(new)
+                    new
+                } else {
+                    token
+                }
+            }
     }
 
     override suspend fun store(token: LeasedServiceToken) {
@@ -31,18 +34,11 @@ class ServiceTokenStorage(
      * * You can lease more than one valid service token
      * * The service token is stored in memory, so we do not need distributed locking
      */
-    override suspend fun lockingRefresh(token: LeasedServiceToken): LeasedServiceToken {
+    override suspend fun lockingRefresh(token: LeasedServiceToken) {
         return mutex.withLock {
-            val currentToken = load()
-            if (isTokenExpired(currentToken)) {
-                newToken()
-            } else {
-                currentToken
+            if (isTokenExpired(load())) {
+                store(oauthClient.login())
             }
         }
-    }
-
-    private suspend fun newToken() = mutex2.withLock {
-        oauthClient.login()
     }
 }
