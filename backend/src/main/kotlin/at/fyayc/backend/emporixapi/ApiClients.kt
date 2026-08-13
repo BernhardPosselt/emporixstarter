@@ -4,6 +4,7 @@ import at.fyayc.backend.BackendProperties
 import at.fyayc.emporixapi.auth.AnonymousOAuthClient
 import at.fyayc.emporixapi.auth.CustomerOAuthClient
 import at.fyayc.emporixapi.auth.ServiceOauthClient
+import at.fyayc.emporixapi.customer.CustomerClient
 import at.fyayc.emporixapi.http.ApiConfig
 import at.fyayc.emporixapi.http.registerOEInterceptors
 import at.fyayc.emporixapi.session.SessionClient
@@ -74,6 +75,15 @@ class ApiClients {
         apiConfig: ApiConfig,
         httpClient: HttpClient,
     ) = SessionClient(
+        client = httpClient,
+        apiConfig = apiConfig,
+    )
+
+    @Bean
+    fun customerClient(
+        apiConfig: ApiConfig,
+        httpClient: HttpClient,
+    ) = CustomerClient(
         client = httpClient,
         apiConfig = apiConfig,
     )
