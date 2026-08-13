@@ -13,12 +13,12 @@ backend:
   cors-domains: [ ]
   emporix-api:
     timeout-millis: 55000 # this must be shorter than the redis lock timeout
-  oauth:
-    # Emporix API
-    refresh-margin-in-seconds: 30
-    client-id: "XH5ej9Tpdlg1SaI1vosMSowEYyvsTMsz1iGIi3B3qaYKIVBU"
-    client-scopes:
-      tenant: "${backend.tenant}"
+    oauth:
+      # Emporix API
+      refresh-margin-in-seconds: 30
+      client-id: "XH5ej9Tpdlg1SaI1vosMSowEYyvsTMsz1iGIi3B3qaYKIVBU"
+      client-scopes:
+        tenant: "${backend.tenant}"
   users:
     actuator:
       login: "actuator"

@@ -1,10 +1,10 @@
 package at.fyayc.emporixapi.products
 
+import at.fyayc.emporixapi.auth.EmporixServiceToken
 import at.fyayc.emporixapi.http.ApiConfig
-import at.fyayc.emporixapi.http.TokenType
 import at.fyayc.emporixapi.http.parseOrThrow
-import at.fyayc.emporixapi.http.withToken
 import io.ktor.client.*
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.*
@@ -20,6 +20,7 @@ class ProductClient(
         skipVariantGeneration: Boolean,
         doIndex: Boolean,
         contentLanguage: String?,
+        token: EmporixServiceToken,
     ) {
         client.post(apiConfig.baseUrl) {
             url {
@@ -38,9 +39,9 @@ class ProductClient(
                 contentLanguage?.let {
                     append(HttpHeaders.ContentLanguage, it)
                 }
+                bearerAuth(token.accessToken)
                 setBody(product)
             }
-            withToken(TokenType.SERVICE)
         }.parseOrThrow<Unit>()
     }
 }

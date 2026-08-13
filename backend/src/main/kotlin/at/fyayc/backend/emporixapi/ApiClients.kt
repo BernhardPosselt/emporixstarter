@@ -4,7 +4,6 @@ import at.fyayc.backend.BackendProperties
 import at.fyayc.emporixapi.auth.AnonymousOAuthClient
 import at.fyayc.emporixapi.auth.CustomerOAuthClient
 import at.fyayc.emporixapi.auth.ServiceOauthClient
-import at.fyayc.emporixapi.auth.ServiceTokenStorage
 import at.fyayc.emporixapi.http.ApiConfig
 import io.ktor.client.*
 import io.ktor.client.plugins.*
@@ -19,12 +18,15 @@ import org.springframework.integration.redis.util.RedisLockRegistry
 @Configuration
 class ApiClients {
     @Bean
-    fun apiConfig(properties: BackendProperties) = ApiConfig(
-        tenant = properties.tenant,
-        clientId = properties.oauth.clientId,
-        clientSecret = properties.oauth.clientSecret,
-        clientScopes = properties.oauth.clientScopes,
-    )
+    fun apiConfig(properties: BackendProperties): ApiConfig {
+        val oauth = properties.emporixApi.oauth
+        return ApiConfig(
+            tenant = properties.tenant,
+            clientId = oauth.clientId,
+            clientSecret = oauth.clientSecret,
+            clientScopes = oauth.clientScopes,
+        )
+    }
 
     @Bean
     fun httpClient(properties: BackendProperties) = HttpClient {
@@ -45,15 +47,6 @@ class ApiClients {
     ) = ServiceOauthClient(
         client = httpClient,
         apiConfig = apiConfig
-    )
-
-    @Bean
-    fun serviceTokenStorage(
-        properties: BackendProperties,
-        serviceOauthClient: ServiceOauthClient,
-    ) = ServiceTokenStorage(
-        oauthClient = serviceOauthClient,
-        marginInSeconds = properties.oauth.refreshMarginInSeconds,
     )
 
     @Bean

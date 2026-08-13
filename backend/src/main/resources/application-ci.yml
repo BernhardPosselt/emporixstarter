@@ -1,6 +1,7 @@
 backend:
-  oauth:
-    client-secret: "developmentpassword"
+  emporix-api:
+    oauth:
+      client-secret: "developmentpassword"
   users:
     actuator:
       password: "developmentpassword"
