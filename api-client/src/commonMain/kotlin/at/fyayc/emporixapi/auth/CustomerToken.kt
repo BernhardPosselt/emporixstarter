@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EmporixSessionToken(
+data class CustomerToken(
     @SerialName("token_type")
     override val tokenType: String,
     @SerialName("access_token")
@@ -19,4 +19,5 @@ data class EmporixSessionToken(
     val sessionId: String,
     @SerialName("scope")
     override val scope: String,
-) : OAuthToken
+) : SessionToken
+

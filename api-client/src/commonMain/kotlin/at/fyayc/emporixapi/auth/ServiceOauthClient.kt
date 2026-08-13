@@ -27,10 +27,10 @@ class ServiceOauthClient(
                 }
             }
             contentType(ContentType.Application.Json)
-        }.parseOrThrow<EmporixServiceToken>()
+        }.parseOrThrow<ServiceToken>()
         return LeasedServiceToken(
             createdAt = Clock.System.now(),
-            token = response.body,
+            token = response,
         )
     }
 }

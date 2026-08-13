@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
 @Serializable
-data class LeasedServiceToken(
-    override val token: ServiceToken,
+data class LeasedAnonymousToken(
+    override val token: AnonymousToken,
     override val createdAt: Instant,
-) : LeasedToken<ServiceToken>
+) : LeasedSessionToken

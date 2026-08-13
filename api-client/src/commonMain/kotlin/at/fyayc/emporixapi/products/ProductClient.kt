@@ -1,6 +1,6 @@
 package at.fyayc.emporixapi.products
 
-import at.fyayc.emporixapi.auth.EmporixServiceToken
+import at.fyayc.emporixapi.auth.ServiceToken
 import at.fyayc.emporixapi.http.ApiConfig
 import at.fyayc.emporixapi.http.parseOrThrow
 import io.ktor.client.*
@@ -20,7 +20,7 @@ class ProductClient(
         skipVariantGeneration: Boolean,
         doIndex: Boolean,
         contentLanguage: String?,
-        token: EmporixServiceToken,
+        token: ServiceToken,
     ) {
         client.post(apiConfig.baseUrl) {
             url {

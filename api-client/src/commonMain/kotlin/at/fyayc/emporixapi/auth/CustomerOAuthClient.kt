@@ -11,35 +11,33 @@ class CustomerOAuthClient(
     private val client: HttpClient,
     private val apiConfig: ApiConfig,
 ) {
-    suspend fun login(credentials: CustomerCredentials): LeasedSessionToken {
+    suspend fun login(credentials: CustomerCredentials): LeasedCustomerToken {
         val response = client.post(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customer", apiConfig.tenant, "login")
             }
             setBody(credentials)
             contentType(ContentType.Application.Json)
-        }.parseOrThrow<EmporixSessionToken>()
-        return LeasedSessionToken(
+        }.parseOrThrow<CustomerToken>()
+        return LeasedCustomerToken(
             createdAt = Clock.System.now(),
-            token = response.body,
-            type = SessionTokenType.CUSTOMER,
+            token = response,
         )
     }
 
-    suspend fun refresh(token: LeasedSessionToken): LeasedSessionToken {
+    suspend fun refresh(token: CustomerToken): LeasedCustomerToken {
         val response = client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customer", apiConfig.tenant, "refreshauthtoken")
                 parameters {
-                    append("refresh_token", token.token.refreshToken)
+                    append("refresh_token", token.refreshToken)
                 }
             }
             contentType(ContentType.Application.Json)
-        }.parseOrThrow<EmporixSessionToken>()
-        return LeasedSessionToken(
+        }.parseOrThrow<CustomerToken>()
+        return LeasedCustomerToken(
             createdAt = Clock.System.now(),
-            token = response.body,
-            type = SessionTokenType.CUSTOMER,
+            token = response,
         )
     }
 }

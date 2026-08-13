@@ -1,5 +1,5 @@
 package at.fyayc.emporixapi.session
 
-enum class Country {
+enum class CountryIso {
     DE
 }

@@ -1,8 +1,7 @@
 package at.fyayc.emporixapi.session
 
-import at.fyayc.emporixapi.auth.EmporixSessionToken
+import at.fyayc.emporixapi.auth.CustomerToken
 import at.fyayc.emporixapi.http.ApiConfig
-import at.fyayc.emporixapi.http.ApiResponse
 import at.fyayc.emporixapi.http.parseOrThrow
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -13,8 +12,8 @@ class SessionClient(
     private val apiConfig: ApiConfig,
 ) {
     suspend fun ownSessionContext(
-        token: EmporixSessionToken,
-    ): ApiResponse<CustomerSession> {
+        token: CustomerToken,
+    ): CustomerSession {
         return client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("session-context", apiConfig.tenant, "me", "context")

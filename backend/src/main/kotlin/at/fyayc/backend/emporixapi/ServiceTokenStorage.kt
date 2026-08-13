@@ -1,9 +1,9 @@
 package at.fyayc.backend.emporixapi
 
 import at.fyayc.backend.BackendProperties
-import at.fyayc.emporixapi.auth.EmporixServiceToken
 import at.fyayc.emporixapi.auth.LeasedServiceToken
 import at.fyayc.emporixapi.auth.ServiceOauthClient
+import at.fyayc.emporixapi.auth.ServiceToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 class ServiceTokenStorage(
     val oauthClient: ServiceOauthClient,
     properties: BackendProperties,
-) : BaseTokenStorage<EmporixServiceToken, LeasedServiceToken>(properties.emporixApi.oauth.refreshMarginInSeconds) {
+) : BaseTokenStorage<ServiceToken, LeasedServiceToken>(properties.emporixApi.oauth.refreshMarginInSeconds) {
     private var token: LeasedServiceToken? = null
 
     override fun load(): LeasedServiceToken {

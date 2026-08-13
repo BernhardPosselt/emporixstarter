@@ -3,7 +3,7 @@ package at.fyayc.backend.auth
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UsernamePasswordLogin(
-    val username: String,
+data class PasswordLogin(
+    val email: String,
     val password: String,
 )

@@ -11,7 +11,7 @@ class AnonymousOAuthClient(
     private val client: HttpClient,
     private val apiConfig: ApiConfig,
 ) {
-    suspend fun login(): LeasedSessionToken {
+    suspend fun login(): LeasedAnonymousToken {
         val response = client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customerlogin", "auth", "anonymous", "login")
@@ -21,31 +21,29 @@ class AnonymousOAuthClient(
                 }
             }
             contentType(ContentType.Application.Json)
-        }.parseOrThrow<EmporixSessionToken>()
-        return LeasedSessionToken(
+        }.parseOrThrow<AnonymousToken>()
+        return LeasedAnonymousToken(
             createdAt = Clock.System.now(),
-            token = response.body,
-            type = SessionTokenType.ANONYMOUS,
+            token = response,
         )
     }
 
-    suspend fun refresh(token: LeasedSessionToken): LeasedSessionToken {
+    suspend fun refresh(token: AnonymousToken): LeasedAnonymousToken {
         val response = client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customerlogin", "auth", "anonymous", "refresh")
                 parameters {
                     append("tenant", apiConfig.tenant)
                     append("client_id", apiConfig.clientId)
-                    append("anonymous_token", token.token.accessToken)
-                    append("refresh_token", token.token.refreshToken)
+                    append("anonymous_token", token.accessToken)
+                    append("refresh_token", token.refreshToken)
                 }
             }
             contentType(ContentType.Application.Json)
-        }.parseOrThrow<EmporixSessionToken>()
-        return LeasedSessionToken(
+        }.parseOrThrow<AnonymousToken>()
+        return LeasedAnonymousToken(
             createdAt = Clock.System.now(),
-            token = response.body,
-            type = SessionTokenType.ANONYMOUS,
+            token = response,
         )
     }
 }
