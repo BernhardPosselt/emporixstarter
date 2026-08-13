@@ -9,6 +9,10 @@ spring:
       host: localhost
       password: "developmentpassword"
       port: 6379
+  session:
+    data:
+      redis:
+        namespace: "spring:session"
 backend:
   cors-domains: [ ]
   emporix-api:

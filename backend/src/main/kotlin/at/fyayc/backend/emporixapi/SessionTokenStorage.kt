@@ -7,8 +7,10 @@ import at.fyayc.emporixapi.auth.LeasedAnonymousToken
 import at.fyayc.emporixapi.auth.LeasedCustomerToken
 import at.fyayc.emporixapi.auth.LeasedSessionToken
 import at.fyayc.emporixapi.auth.SessionToken
+import jakarta.servlet.http.HttpSession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import org.springframework.integration.redis.util.RedisLockRegistry
 import org.springframework.stereotype.Service
 
@@ -18,13 +20,15 @@ class SessionTokenStorage(
     private val anonymousOAuthClient: AnonymousOAuthClient,
     private val customerOAuthClient: CustomerOAuthClient,
     private val redisLockRegistry: RedisLockRegistry,
+    private val httpSession: HttpSession,
+    private val json: Json,
 ) : BaseTokenStorage<SessionToken, LeasedSessionToken>(properties.emporixApi.oauth.refreshMarginInSeconds) {
     override fun load(): LeasedSessionToken {
-        TODO("Not yet implemented")
+        return json.decodeFromString(httpSession.getAttribute("EMPORIX_SESSION_TOKEN") as String)
     }
 
     override fun store(token: LeasedSessionToken) {
-        TODO("Not yet implemented")
+        httpSession.setAttribute("EMPORIX_SESSION_TOKEN", json.encodeToString(token))
     }
 
     override fun lockingRefresh(token: LeasedSessionToken) {

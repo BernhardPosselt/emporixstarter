@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession
 
 @EnableConfigurationProperties(BackendProperties::class)
 @SpringBootApplication
@@ -18,8 +19,8 @@ import org.springframework.boot.runApplication
 @OpenAPIDefinition(
     info = Info(title = "Emporix Service API", version = "v1"),
 )
-class BackendApplication {
-}
+@EnableRedisHttpSession
+class BackendApplication
 
 fun main(args: Array<String>) {
     runApplication<BackendApplication>(*args)
