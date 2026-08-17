@@ -14,6 +14,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -67,13 +69,21 @@ class WebSecurityConfiguration {
                 authorize(HttpMethod.GET, "/products/**", authenticated)
                 authorize("/**", denyAll)
             }
-            httpBasic { }
+            anonymous {
+
+            }
             sessionManagement {
-                // no cookies
-                sessionCreationPolicy = SessionCreationPolicy.STATELESS
+                sessionCreationPolicy = SessionCreationPolicy.IF_REQUIRED
+                sessionConcurrency {
+                    maximumSessions = 1
+                    maxSessionsPreventsLogin = true
+                }
+            }
+            logout {
+                addLogoutHandler(HeaderWriterLogoutHandler(ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES)))
             }
             csrf {
-                // no csrf possible without cookies
+                // we don't use non application/json routes
                 disable()
             }
         }

@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher
 import kotlin.time.Clock
 
-class SsoLoginFilter(
+class SSOLoginFilter(
     private val json: Json,
     authenticationManager: AuthenticationManager,
 ) : AbstractAuthenticationProcessingFilter(
