@@ -8,7 +8,7 @@ import kotlin.time.Duration.Companion.seconds
 abstract class BaseTokenStorage<T : OAuthToken, LT : LeasedToken<T>>(
     private val marginInSeconds: Int,
 ) {
-    fun retrieve(): LeasedToken<T> {
+    fun retrieve(): LT {
         // TODO: do we want to translate exceptions from failed tokens here?
         val currentToken = load()
         return if (isTokenExpired(currentToken)) {
@@ -19,10 +19,11 @@ abstract class BaseTokenStorage<T : OAuthToken, LT : LeasedToken<T>>(
         }
     }
 
+    abstract fun store(token: LT)
+
     protected fun isTokenExpired(token: LT): Boolean =
         token.createdAt.plus(marginInSeconds.seconds) > Clock.System.now()
 
     protected abstract fun load(): LT
-    protected abstract fun store(token: LT)
     protected abstract fun lockingRefresh(token: LT)
 }
