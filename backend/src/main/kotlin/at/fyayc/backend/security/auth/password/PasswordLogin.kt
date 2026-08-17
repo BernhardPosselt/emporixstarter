@@ -1,4 +1,4 @@
-package at.fyayc.backend.auth
+package at.fyayc.backend.security.auth.password
 
 import kotlinx.serialization.Serializable
 

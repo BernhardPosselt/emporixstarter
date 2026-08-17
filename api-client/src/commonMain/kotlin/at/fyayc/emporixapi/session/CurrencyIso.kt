@@ -1,6 +1,6 @@
 package at.fyayc.emporixapi.session
 
-enum class Currency {
+enum class CurrencyIso {
     EUR,
     USD;
 }

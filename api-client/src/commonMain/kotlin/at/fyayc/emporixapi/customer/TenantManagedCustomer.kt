@@ -1,6 +1,6 @@
 package at.fyayc.emporixapi.customer
 
-import at.fyayc.emporixapi.session.Currency
+import at.fyayc.emporixapi.session.CurrencyIso
 import at.fyayc.emporixapi.session.Metadata
 import at.fyayc.emporixapi.util.LanguageIso
 import kotlinx.serialization.Serializable
@@ -16,7 +16,7 @@ data class TenantManagedCustomer(
     val contactPhone: String?,
     val company: String?,
     val preferredLanguage: LanguageIso?,
-    val preferredCurrency: Currency?,
+    val preferredCurrency: CurrencyIso?,
     val preferredSite: String?,
     val type: CustomerType = CustomerType.CUSTOMER,
     val photoUrl: String?,

@@ -7,7 +7,7 @@ data class CustomerSession(
     val sessionId: String?,
     val customerId: String?,
     val siteCode: String?,
-    val currency: Currency?,
+    val currency: CurrencyIso?,
     val cartId: String?,
     val targetLocation: CountryIso?,
     val language: LanguageIso?,
