@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlin.time.Instant
 
 @Serializable
-data class TenantManagedCustomer(
+data class OwnCustomer(
     val title: String?,
     val firstName: String?,
     val middleName: String?,
@@ -29,9 +29,7 @@ data class TenantManagedCustomer(
     val defaultAddress: Address,
     val accounts: List<AccountId> = emptyList(),
     val contactEmail: String?,
-    val active: Boolean = false,
-    val onHold: Boolean = false,
     val email: String,
     val businessModel: BusinessModel = BusinessModel.B2C,
-    val metadataCreatedAt: Instant,
+    val lastLogin: Instant,
 )

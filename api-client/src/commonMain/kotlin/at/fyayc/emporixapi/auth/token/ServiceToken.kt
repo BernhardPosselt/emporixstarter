@@ -1,10 +1,10 @@
-package at.fyayc.emporixapi.auth
+package at.fyayc.emporixapi.auth.token
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CustomerToken(
+data class ServiceToken(
     @SerialName("token_type")
     override val tokenType: String,
     @SerialName("access_token")
@@ -15,9 +15,8 @@ data class CustomerToken(
     override val refreshToken: String,
     @SerialName("refresh_token_expires_in")
     override val refreshTokenExpiresIn: Int,
+    @SerialName("session_idle_time")
+    val sessionIdleTime: Int,
+    @SerialName("scope")
     override val scope: String,
-    val sessionId: String,
-    val saasToken: String,
-    val initialPassword: Boolean,
-) : SessionToken
-
+) : OAuthToken

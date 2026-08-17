@@ -1,5 +1,7 @@
 package at.fyayc.emporixapi.auth
 
+import at.fyayc.emporixapi.auth.token.LeasedServiceToken
+import at.fyayc.emporixapi.auth.token.ServiceToken
 import at.fyayc.emporixapi.http.ApiConfig
 import at.fyayc.emporixapi.http.parseOrThrow
 import io.ktor.client.*

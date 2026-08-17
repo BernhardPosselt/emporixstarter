@@ -1,6 +1,6 @@
 package at.fyayc.emporixapi.products
 
-import at.fyayc.emporixapi.auth.ServiceToken
+import at.fyayc.emporixapi.auth.token.ServiceToken
 import at.fyayc.emporixapi.http.ApiConfig
 import at.fyayc.emporixapi.http.parseOrThrow
 import io.ktor.client.*

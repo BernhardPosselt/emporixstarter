@@ -3,10 +3,10 @@ package at.fyayc.backend.emporixapi
 import at.fyayc.backend.BackendProperties
 import at.fyayc.emporixapi.auth.AnonymousOAuthClient
 import at.fyayc.emporixapi.auth.CustomerOAuthClient
-import at.fyayc.emporixapi.auth.LeasedAnonymousToken
-import at.fyayc.emporixapi.auth.LeasedCustomerToken
-import at.fyayc.emporixapi.auth.LeasedSessionToken
-import at.fyayc.emporixapi.auth.SessionToken
+import at.fyayc.emporixapi.auth.token.LeasedAnonymousToken
+import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
+import at.fyayc.emporixapi.auth.token.LeasedSessionToken
+import at.fyayc.emporixapi.auth.token.SessionToken
 import jakarta.servlet.http.HttpSession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking

@@ -3,6 +3,7 @@ package at.fyayc.backend.emporixapi
 import at.fyayc.backend.BackendProperties
 import at.fyayc.emporixapi.auth.AnonymousOAuthClient
 import at.fyayc.emporixapi.auth.CustomerOAuthClient
+import at.fyayc.emporixapi.auth.IAMClient
 import at.fyayc.emporixapi.auth.ServiceOauthClient
 import at.fyayc.emporixapi.customer.CustomerClient
 import at.fyayc.emporixapi.http.ApiConfig
@@ -94,5 +95,14 @@ class ApiClients {
     ) = RedisLockRegistry(
         redisConnectionFactory,
         "oauth"
+    )
+
+    @Bean
+    fun iamClient(
+        apiConfig: ApiConfig,
+        httpClient: HttpClient,
+    ) = IAMClient(
+        client = httpClient,
+        apiConfig = apiConfig,
     )
 }

@@ -1,4 +1,4 @@
-package at.fyayc.emporixapi.session
+package at.fyayc.emporixapi.util
 
 enum class LanguageIso {
     DE,

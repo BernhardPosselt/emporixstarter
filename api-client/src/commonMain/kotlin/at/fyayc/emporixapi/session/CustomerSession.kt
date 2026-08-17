@@ -1,5 +1,6 @@
 package at.fyayc.emporixapi.session
 
+import at.fyayc.emporixapi.util.LanguageIso
 import kotlinx.serialization.json.JsonObject
 
 data class CustomerSession(

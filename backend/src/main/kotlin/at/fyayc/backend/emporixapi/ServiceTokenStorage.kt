@@ -1,9 +1,9 @@
 package at.fyayc.backend.emporixapi
 
 import at.fyayc.backend.BackendProperties
-import at.fyayc.emporixapi.auth.LeasedServiceToken
 import at.fyayc.emporixapi.auth.ServiceOauthClient
-import at.fyayc.emporixapi.auth.ServiceToken
+import at.fyayc.emporixapi.auth.token.LeasedServiceToken
+import at.fyayc.emporixapi.auth.token.ServiceToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service

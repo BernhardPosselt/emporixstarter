@@ -1,4 +1,4 @@
-package at.fyayc.emporixapi.auth
+package at.fyayc.emporixapi.auth.token
 
 import kotlinx.serialization.Serializable
 
