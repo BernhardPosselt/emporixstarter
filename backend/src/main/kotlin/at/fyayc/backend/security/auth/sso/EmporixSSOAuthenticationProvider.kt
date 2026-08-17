@@ -10,13 +10,13 @@ class EmporixSSOAuthenticationProvider(
     private val emporixLoginService: EmporixLoginService,
 ) : AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication? {
-        if (authentication is SSOLoginToken) {
+        return if (authentication is SSOLoginToken) {
             val (user, token) = emporixLoginService.login(
                 authentication.credentials
             )
-            return SSOLoginToken(user, token, user.authorities)
+            SSOLoginToken(user, token, user.authorities)
         } else {
-            throw RuntimeException("authentication passed into EmporixPasswordLoginAuthenticationProvider must be of type SSOLoginToken")
+            null
         }
     }
 

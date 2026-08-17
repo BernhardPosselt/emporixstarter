@@ -11,11 +11,11 @@ class EmporixPasswordLoginAuthenticationProvider(
     private val emporixLoginService: EmporixLoginService,
 ) : AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication? {
-        if (authentication is UsernamePasswordAuthenticationToken) {
+        return if (authentication is UsernamePasswordAuthenticationToken) {
             val (user, token) = emporixLoginService.login(authentication.name, authentication.credentials.toString())
-            return UsernamePasswordAuthenticationToken(user, token, user.authorities)
+            UsernamePasswordAuthenticationToken(user, token, user.authorities)
         } else {
-            throw RuntimeException("authentication passed into EmporixPasswordLoginAuthenticationProvider must be of type UsernamePasswordAuthenticationToken")
+            null
         }
     }
 
