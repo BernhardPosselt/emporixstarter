@@ -28,6 +28,7 @@ class CustomerAuthenticationSuccessHandler(
             val emporixSession = runBlocking {
                 sessionClient.ownSessionContext(leasedCustomerToken.token)
             }
+            // TODO: do we need to clear these session values?
             sessionStorage.language = emporixSession.language
             sessionStorage.sessionId = emporixSession.sessionId
             sessionStorage.customerId = emporixSession.customerId
