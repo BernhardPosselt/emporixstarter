@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -72,7 +71,6 @@ class WebSecurityConfiguration {
         emporixPasswordLoginAuthenticationProvider: EmporixPasswordLoginAuthenticationProvider,
         json: Json,
     ): SecurityFilterChain {
-        val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
         http.invoke {
             securityMatcher("/**")
             authorizeHttpRequests {
@@ -83,7 +81,6 @@ class WebSecurityConfiguration {
                 authorize(HttpMethod.GET, "/products/**", authenticated)
                 authorize("/**", denyAll)
             }
-            val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
             anonymous {
 
             }
