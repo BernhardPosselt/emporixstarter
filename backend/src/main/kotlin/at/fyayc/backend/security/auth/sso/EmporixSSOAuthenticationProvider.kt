@@ -3,9 +3,7 @@ package at.fyayc.backend.security.auth.sso
 import at.fyayc.backend.security.auth.EmporixLoginService
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
-import org.springframework.stereotype.Component
 
-@Component
 class EmporixSSOAuthenticationProvider(
     private val emporixLoginService: EmporixLoginService,
 ) : AuthenticationProvider {

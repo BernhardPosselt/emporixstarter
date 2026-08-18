@@ -1,6 +1,7 @@
 package at.fyayc.backend
 
 import at.fyayc.backend.security.AuthenticationFilterDsl
+import at.fyayc.backend.security.auth.EmporixLoginService
 import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticationProvider
 import at.fyayc.backend.security.auth.password.EmporixUsernamePasswordFilter
 import at.fyayc.backend.security.auth.sso.EmporixSSOAuthenticationProvider
@@ -67,8 +68,7 @@ class WebSecurityConfiguration {
     @Order(2)
     fun apiSecurity(
         http: HttpSecurity,
-        emporixSSOAuthenticationProvider: EmporixSSOAuthenticationProvider,
-        emporixPasswordLoginAuthenticationProvider: EmporixPasswordLoginAuthenticationProvider,
+        emporixLoginService: EmporixLoginService,
         json: Json,
     ): SecurityFilterChain {
         http.invoke {
@@ -99,11 +99,8 @@ class WebSecurityConfiguration {
                 disable()
             }
         }
-        http.authenticationProvider(emporixPasswordLoginAuthenticationProvider)
-        http.authenticationProvider(emporixSSOAuthenticationProvider)
-        // auth filters need to be registered using a custom DSL since the
-        // authenticationManager instance is not yet available yet
-        // see https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter#disqus_thread
+        http.authenticationProvider(EmporixSSOAuthenticationProvider(emporixLoginService))
+        http.authenticationProvider(EmporixPasswordLoginAuthenticationProvider(emporixLoginService))
         http.apply(
             AuthenticationFilterDsl(
                 { EmporixSSOFilter(json, it) },
