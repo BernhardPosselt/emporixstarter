@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 typealias AuthenticationFilterFactory = (AuthenticationManager) -> AbstractAuthenticationProcessingFilter
 
 class AuthenticationFilterDsl(
-    val filters: List<AuthenticationFilterFactory>,
+    vararg val filters: AuthenticationFilterFactory,
 ) : AbstractHttpConfigurer<AuthenticationFilterDsl, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)

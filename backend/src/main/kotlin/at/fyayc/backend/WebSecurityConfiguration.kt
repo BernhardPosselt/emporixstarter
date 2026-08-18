@@ -106,10 +106,9 @@ class WebSecurityConfiguration {
         // see https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter#disqus_thread
         http.apply(
             AuthenticationFilterDsl(
-                listOf(
-                    { EmporixSSOFilter(json, it) },
-                    { EmporixUsernamePasswordFilter(json, it) }
-                )))
+                { EmporixSSOFilter(json, it) },
+                { EmporixUsernamePasswordFilter(json, it) }
+            ))
         return http.build()
     }
 
