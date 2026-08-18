@@ -1,11 +1,18 @@
 package at.fyayc.backend
 
+import at.fyayc.backend.security.AuthenticationFilterDsl
+import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticationProvider
+import at.fyayc.backend.security.auth.password.EmporixUsernamePasswordFilter
+import at.fyayc.backend.security.auth.sso.EmporixSSOAuthenticationProvider
+import at.fyayc.backend.security.auth.sso.EmporixSSOFilter
+import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -18,6 +25,7 @@ import org.springframework.security.web.authentication.logout.HeaderWriterLogout
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+
 
 @Configuration(proxyBeanMethods = false)
 class WebSecurityConfiguration {
@@ -58,7 +66,13 @@ class WebSecurityConfiguration {
 
     @Bean
     @Order(2)
-    fun apiSecurity(http: HttpSecurity): SecurityFilterChain {
+    fun apiSecurity(
+        http: HttpSecurity,
+        emporixSSOAuthenticationProvider: EmporixSSOAuthenticationProvider,
+        emporixPasswordLoginAuthenticationProvider: EmporixPasswordLoginAuthenticationProvider,
+        json: Json,
+    ): SecurityFilterChain {
+        val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
         http.invoke {
             securityMatcher("/**")
             authorizeHttpRequests {
@@ -69,6 +83,7 @@ class WebSecurityConfiguration {
                 authorize(HttpMethod.GET, "/products/**", authenticated)
                 authorize("/**", denyAll)
             }
+            val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
             anonymous {
 
             }
@@ -87,6 +102,17 @@ class WebSecurityConfiguration {
                 disable()
             }
         }
+        http.authenticationProvider(emporixPasswordLoginAuthenticationProvider)
+        http.authenticationProvider(emporixSSOAuthenticationProvider)
+        // auth filters need to be registered using a custom DSL since the
+        // authenticationManager instance is not yet available yet
+        // see https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter#disqus_thread
+        http.apply(
+            AuthenticationFilterDsl(
+                listOf(
+                    { EmporixSSOFilter(json, it) },
+                    { EmporixUsernamePasswordFilter(json, it) }
+                )))
         return http.build()
     }
 

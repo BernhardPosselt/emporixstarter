@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher
 
-class UsernamePasswordJsonLoginFilter(
+class EmporixUsernamePasswordFilter(
     private val json: Json,
     authenticationManager: AuthenticationManager,
 ) : AbstractAuthenticationProcessingFilter(

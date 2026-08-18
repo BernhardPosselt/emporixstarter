@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher
 import kotlin.time.Clock
 
-class SSOLoginFilter(
+class EmporixSSOFilter(
     private val json: Json,
     authenticationManager: AuthenticationManager,
 ) : AbstractAuthenticationProcessingFilter(
@@ -28,7 +28,7 @@ class SSOLoginFilter(
         }
         val credentials = json.decodeFromStream<SSOLogin>(request.inputStream)
         val authRequest = SSOLoginToken(
-            credentials = LeasedCustomerToken(
+            credentialsObj = LeasedCustomerToken(
                 token = credentials.token,
                 createdAt = Clock.System.now(),
             )
