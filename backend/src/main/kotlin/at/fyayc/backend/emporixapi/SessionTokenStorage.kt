@@ -17,18 +17,29 @@ import org.springframework.stereotype.Service
 @Service
 class SessionTokenStorage(
     properties: BackendProperties,
+    httpSession: HttpSession,
     private val anonymousOAuthClient: AnonymousOAuthClient,
     private val customerOAuthClient: CustomerOAuthClient,
     private val redisLockRegistry: RedisLockRegistry,
-    private val httpSession: HttpSession,
     private val json: Json,
 ) : BaseTokenStorage<SessionToken, LeasedSessionToken>(properties.emporixApi.oauth.refreshMarginInSeconds) {
+    private var sessionToken by httpSession.property<String?>("EMPORIX_SESSION_TOKEN")
+
     override fun load(): LeasedSessionToken {
-        return json.decodeFromString(httpSession.getAttribute("EMPORIX_SESSION_TOKEN") as String)
+        val token = sessionToken
+        return if (token == null) {
+            runBlocking(Dispatchers.Default) {
+                anonymousOAuthClient.login().also {
+                    store(it)
+                }
+            }
+        } else {
+            json.decodeFromString(token)
+        }
     }
 
     override fun store(token: LeasedSessionToken) {
-        httpSession.setAttribute("EMPORIX_SESSION_TOKEN", json.encodeToString(token))
+        sessionToken = json.encodeToString(token)
     }
 
     override fun lockingRefresh(token: LeasedSessionToken) {

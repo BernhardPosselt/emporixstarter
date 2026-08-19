@@ -1,5 +1,6 @@
 package at.fyayc.backend
 
+import at.fyayc.backend.emporixapi.SessionTokenStorage
 import at.fyayc.backend.security.AuthenticationFilterDsl
 import at.fyayc.backend.security.auth.EmporixLoginService
 import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticationProvider
@@ -69,6 +70,7 @@ class WebSecurityConfiguration {
     fun apiSecurity(
         http: HttpSecurity,
         emporixLoginService: EmporixLoginService,
+        sessionTokenStorage: SessionTokenStorage,
         json: Json,
     ): SecurityFilterChain {
         http.invoke {
@@ -92,6 +94,7 @@ class WebSecurityConfiguration {
                 }
             }
             logout {
+                // TODO: needs to call https://developer.emporix.io/api-references/api-guides/companies-and-customers/customer-management/api-reference/authentication-and-authorization#get-customer-tenant-logout
                 addLogoutHandler(HeaderWriterLogoutHandler(ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES)))
             }
             csrf {
@@ -100,7 +103,12 @@ class WebSecurityConfiguration {
             }
         }
         http.authenticationProvider(EmporixSSOAuthenticationProvider(emporixLoginService))
-        http.authenticationProvider(EmporixPasswordLoginAuthenticationProvider(emporixLoginService))
+        http.authenticationProvider(
+            EmporixPasswordLoginAuthenticationProvider(
+                emporixLoginService,
+                sessionTokenStorage
+            )
+        )
         http.apply(
             AuthenticationFilterDsl(
                 { EmporixSSOFilter(json, it) },

@@ -31,3 +31,9 @@ backend:
     actuator:
       login: "actuator"
   tenant: "fyaycff1"
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true

@@ -4,6 +4,7 @@ import at.fyayc.backend.emporixapi.ServiceTokenStorage
 import at.fyayc.emporixapi.auth.CustomerCredentials
 import at.fyayc.emporixapi.auth.CustomerOAuthClient
 import at.fyayc.emporixapi.auth.IAMClient
+import at.fyayc.emporixapi.auth.token.AnonymousToken
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import at.fyayc.emporixapi.customer.CustomerClient
 import at.fyayc.emporixapi.http.ApiError
@@ -22,14 +23,15 @@ class EmporixLoginService(
     private val customerClient: CustomerClient,
     private val serviceTokenStorage: ServiceTokenStorage,
 ) {
-    fun login(email: String, password: String): Pair<User, LeasedCustomerToken> {
+    fun login(email: String, password: String, token: AnonymousToken): Pair<User, LeasedCustomerToken> {
         return runBlocking(Dispatchers.Default) {
             try {
                 val token = customerOAuthClient.login(
                     credentials = CustomerCredentials(
                         email = email,
                         password = password,
-                    )
+                    ),
+                    token
                 )
                 retrieveUser(token) to token
             } catch (e: ApiError) {
@@ -46,8 +48,7 @@ class EmporixLoginService(
         leasedCustomerToken: LeasedCustomerToken
     ): User = coroutineScope {
         val leasedServiceToken = serviceTokenStorage.retrieve()
-
-        // stupid Emporix does not return login status and your own groups in this response
+        // Emporix does not return login status and your own groups in this response
         // furthermore, we can't use the userId returned from emporixSession since Emporix
         // requires the customerNumber which needs to be looked up with the following call
         val myProfileDeferred = async { customerClient.getOwnProfile(leasedCustomerToken.token) }
@@ -62,7 +63,7 @@ class EmporixLoginService(
         User(
             groups = userGroups.map {
                 UserGroup(
-                    id = it.id,
+                    id = "ROLE_${it.id}",
                     // TODO: how do we determine the group name? do we want to store translated names as well? do we want a fallback?
                     name = it.name[LanguageIso.EN] ?: throw Exception()
                 )

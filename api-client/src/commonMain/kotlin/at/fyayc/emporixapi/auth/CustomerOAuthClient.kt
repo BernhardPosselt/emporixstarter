@@ -1,5 +1,6 @@
 package at.fyayc.emporixapi.auth
 
+import at.fyayc.emporixapi.auth.token.AnonymousToken
 import at.fyayc.emporixapi.auth.token.CustomerToken
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import at.fyayc.emporixapi.http.ApiConfig
@@ -13,11 +14,12 @@ class CustomerOAuthClient(
     private val client: HttpClient,
     private val apiConfig: ApiConfig,
 ) {
-    suspend fun login(credentials: CustomerCredentials): LeasedCustomerToken {
+    suspend fun login(credentials: CustomerCredentials, token: AnonymousToken): LeasedCustomerToken {
         val response = client.post(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customer", apiConfig.tenant, "login")
             }
+            bearerAuth(token.accessToken)
             setBody(credentials)
             contentType(ContentType.Application.Json)
         }.parseOrThrow<CustomerToken>()
