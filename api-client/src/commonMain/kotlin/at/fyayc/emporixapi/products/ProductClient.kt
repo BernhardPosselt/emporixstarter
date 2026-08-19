@@ -25,13 +25,11 @@ class ProductClient(
         client.post(apiConfig.baseUrl) {
             url {
                 appendPathSegments("product", apiConfig.tenant, "products")
-                parameters {
-                    if (doIndex) {
-                        append("doIndex", "true")
-                    }
-                    if (skipVariantGeneration) {
-                        append("skipVariantGeneration", "true")
-                    }
+                if (doIndex) {
+                    parameters.append("doIndex", "true")
+                }
+                if (skipVariantGeneration) {
+                    parameters.append("skipVariantGeneration", "true")
                 }
             }
             contentType(ContentType.Application.Json)

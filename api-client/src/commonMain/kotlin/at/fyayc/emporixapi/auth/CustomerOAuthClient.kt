@@ -33,9 +33,7 @@ class CustomerOAuthClient(
         val response = client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customer", apiConfig.tenant, "refreshauthtoken")
-                parameters {
-                    append("refresh_token", token.refreshToken)
-                }
+                parameters.append("refresh_token", token.refreshToken)
             }
             contentType(ContentType.Application.Json)
         }.parseOrThrow<CustomerToken>()

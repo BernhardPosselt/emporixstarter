@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.springdoc)
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines)
+    implementation("io.ktor:ktor-client-logging:3.4.3")
     testImplementation(testFixtures("at.fyayc:common"))
     testImplementation(libs.spring.boot.starter.actuator.test)
     testImplementation(libs.spring.boot.starter.security.test)
@@ -43,3 +44,4 @@ tasks.register<CreateDevProfile>("createDevProfile") {
     description = "Creates an application-dev.yml inside your resources folder"
     file = layout.projectDirectory.file("src/main/resources/application-dev.yml")
 }
+

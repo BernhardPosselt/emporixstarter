@@ -22,6 +22,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
@@ -73,9 +74,11 @@ class WebSecurityConfiguration {
         sessionTokenStorage: SessionTokenStorage,
         json: Json,
     ): SecurityFilterChain {
-        http.invoke {
+        http {
             securityMatcher("/**")
             authorizeHttpRequests {
+                authorize(HttpMethod.POST, "/login", permitAll)
+                // swagger docs
                 authorize("/swagger-ui/**", permitAll)
                 authorize("/v3/api-docs/**", permitAll)
                 // allow cors

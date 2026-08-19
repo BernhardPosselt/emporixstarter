@@ -12,6 +12,7 @@ import at.fyayc.emporixapi.session.SessionClient
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.springframework.context.annotation.Bean
@@ -41,6 +42,9 @@ class ApiClients {
             json(Json {
                 explicitNulls = false
             })
+        }
+
+        install(Logging) {
         }
     }.also { it.registerOEInterceptors() }
 

@@ -15,15 +15,12 @@ class CustomerClient(
 ) {
     // note: expand is not implemented
     suspend fun getOwnProfile(
-        serviceToken: CustomerToken,
-        expand: List<String> = emptyList()
+        serviceToken: CustomerToken, expand: List<String> = emptyList()
     ): OwnCustomer {
         return client.post(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customer", apiConfig.tenant, "me")
-                parameters {
-                    append("expand", expand.joinToString(","))
-                }
+                parameters.append("expand", expand.joinToString(","))
                 bearerAuth(serviceToken.accessToken)
             }
             contentType(ContentType.Application.Json)
@@ -32,16 +29,12 @@ class CustomerClient(
 
     // note: expand is not implemented
     suspend fun getProfile(
-        customerNumber: String,
-        serviceToken: ServiceToken,
-        expand: List<String> = emptyList()
+        customerNumber: String, serviceToken: ServiceToken, expand: List<String> = emptyList()
     ): TenantManagedCustomer? {
         return client.post(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customer", apiConfig.tenant, "customers", customerNumber)
-                parameters {
-                    append("expand", expand.joinToString(","))
-                }
+                parameters.append("expand", expand.joinToString(","))
                 bearerAuth(serviceToken.accessToken)
             }
             contentType(ContentType.Application.Json)

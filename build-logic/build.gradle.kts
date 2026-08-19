@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.`kotlin-dsl`
-
 plugins {
     `kotlin-dsl`
 }
@@ -10,6 +8,7 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.kotlinx.coroutines)
     implementation(libs.plugins.versions.toDependency())
     implementation(libs.plugins.kotlin.jvm.toDependency())
 }

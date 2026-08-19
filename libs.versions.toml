@@ -1,19 +1,20 @@
 [versions]
-kotlin = "2.4.0"
-ktor = "3.5.1"
+kotlin = "2.4.10"
 serialization = "1.11.0"
-coroutines = "1.11.0"
+# note that ktor pulls in coroutines and so does spring boot
+# both libs need to pull in the same version, or you'll get into big trouble
+ktor = "3.4.3"
+coroutines = "1.10.2"
 
 [libraries]
 junit-kotlin = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-api", version = "6.1.1" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-api", version = "6.1.3" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.8.0" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
@@ -37,10 +38,10 @@ mockito = { module = "org.mockito:mockito-core" }
 spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
 spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" }
 spring-boot-starter-restclient-test = { module = "org.springframework.boot:spring-boot-starter-restclient-test" }
-springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version = "3.0.3" }
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version = "3.1.0" }
 
 # javascript
-kotlin-wrappers = { module = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom", version = "2026.7.4" }
+kotlin-wrappers = { module = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom", version = "2026.8.3" }
 kotlin-wrappers-js = { module = "org.jetbrains.kotlin-wrappers:kotlin-js" }
 kotlin-wrappers-web = { module = "org.jetbrains.kotlin-wrappers:kotlin-web" }
 kotlin-test-js = { module = "org.jetbrains.kotlin:kotlin-test-js-runner", version = "2.0.21" }

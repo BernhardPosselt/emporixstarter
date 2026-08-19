@@ -17,10 +17,8 @@ class AnonymousOAuthClient(
         val response = client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customerlogin", "auth", "anonymous", "login")
-                parameters {
-                    append("tenant", apiConfig.tenant)
-                    append("client_id", apiConfig.clientId)
-                }
+                parameters.append("client_id", apiConfig.clientId)
+                parameters.append("tenant", apiConfig.tenant)
             }
             contentType(ContentType.Application.Json)
         }.parseOrThrow<AnonymousToken>()
@@ -34,12 +32,10 @@ class AnonymousOAuthClient(
         val response = client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customerlogin", "auth", "anonymous", "refresh")
-                parameters {
-                    append("tenant", apiConfig.tenant)
-                    append("client_id", apiConfig.clientId)
-                    append("anonymous_token", token.accessToken)
-                    append("refresh_token", token.refreshToken)
-                }
+                parameters.append("tenant", apiConfig.tenant)
+                parameters.append("client_id", apiConfig.clientId)
+                parameters.append("anonymous_token", token.accessToken)
+                parameters.append("refresh_token", token.refreshToken)
             }
             contentType(ContentType.Application.Json)
         }.parseOrThrow<AnonymousToken>()

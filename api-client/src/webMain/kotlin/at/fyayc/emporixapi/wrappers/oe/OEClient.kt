@@ -1,7 +1,6 @@
 package at.fyayc.emporixapi.wrappers.oe
 
 import at.fyayc.emporixapi.oe.OrchestrationEngineEventClient
-import at.fyayc.emporixapi.wrappers.ApiResponse
 import at.fyayc.emporixapi.wrappers.EmporixHttpClient
 import at.fyayc.emporixapi.wrappers.oe.events.OEEvent
 import at.fyayc.emporixapi.wrappers.oe.events.SerializableEvent
@@ -19,7 +18,7 @@ class OEClient(
         source = config.source,
     )
 
-    suspend fun <E, T : Any, K : Any> publish(event: E): ApiResponse<OEResponse>
+    suspend fun <E, T : Any, K : Any> publish(event: E): OEResponse
             where E : OEEvent<T>,
                   E : SerializableEvent<K> =
         client.publish(event.toKt()).toJs<OEResponse>()

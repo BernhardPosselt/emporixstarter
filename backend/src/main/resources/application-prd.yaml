@@ -1,5 +1,7 @@
 server:
   servlet:
     session:
+      # an anonymous refresh token is only valid for a bit less than a day
+      timeout: 86280s
       cookie:
         secure: true

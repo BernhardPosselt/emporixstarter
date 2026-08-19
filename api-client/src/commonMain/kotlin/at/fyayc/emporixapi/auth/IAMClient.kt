@@ -23,9 +23,7 @@ class IAMClient(
         client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("iam", apiConfig.tenant, userId, "groups")
-            }
-            parameters {
-                paginateWith(currentPage)
+                parameters.paginateWith(currentPage)
             }
             bearerAuth(serviceToken.accessToken)
             contentType(ContentType.Application.Json)
