@@ -19,7 +19,7 @@ class CustomerTokenRefreshFailedFilter : OncePerRequestFilter() {
         filterChain: FilterChain
     ) {
         try {
-            doFilterInternal(request, response, filterChain)
+            filterChain.doFilter(request, response)
         } catch (_: CustomerTokenRefreshFailed) {
             val auth = this.securityContextHolderStrategy.context.authentication
             logoutHandler.logout(request, response, auth)

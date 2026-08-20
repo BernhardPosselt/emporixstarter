@@ -1,15 +1,26 @@
-package at.fyayc.backend
+package at.fyayc.backend.security
 
+import at.fyayc.backend.BackendProperties
 import at.fyayc.backend.emporixapi.SessionTokenStorage
-import at.fyayc.backend.security.AuthenticationFilterDsl
 import at.fyayc.backend.security.auth.CustomerTokenRefreshFailedFilter
 import at.fyayc.backend.security.auth.EmporixLoginService
 import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticationProvider
 import at.fyayc.backend.security.auth.password.EmporixUsernamePasswordFilter
+import at.fyayc.backend.security.auth.password.PasswordLogin
 import at.fyayc.backend.security.auth.sso.EmporixSSOAuthenticationProvider
 import at.fyayc.backend.security.auth.sso.EmporixSSOFilter
+import io.swagger.v3.oas.models.Operation
+import io.swagger.v3.oas.models.PathItem
+import io.swagger.v3.oas.models.media.Content
+import io.swagger.v3.oas.models.media.MediaType
+import io.swagger.v3.oas.models.media.ObjectSchema
+import io.swagger.v3.oas.models.parameters.RequestBody
+import io.swagger.v3.oas.models.responses.ApiResponse
+import io.swagger.v3.oas.models.responses.ApiResponses
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
+import org.springdoc.core.customizers.OpenApiCustomizer
+import org.springdoc.core.utils.SpringDocAnnotationsUtils
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -28,7 +39,6 @@ import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
 import org.springframework.security.web.session.SessionManagementFilter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-
 
 @Configuration(proxyBeanMethods = false)
 class WebSecurityConfiguration {
@@ -137,5 +147,47 @@ class WebSecurityConfiguration {
                     .allowCredentials(true)
             }
         }
+    }
+
+    // see https://github.com/springdoc/springdoc-openapi/blob/64d512824d8e01f8ec4d8fa3510a6ecd8d40aa57/springdoc-openapi-starter-common/src/main/java/org/springdoc/core/configuration/SpringDocSecurityConfiguration.java#L108
+    @Bean
+    fun loginEndpoints(): OpenApiCustomizer = {
+        val jsonMediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+        it.path(
+            "/login", PathItem()
+                .post(
+                    Operation()
+                        .tags(listOf("Login"))
+                        .operationId("login")
+                        .requestBody(
+                            RequestBody()
+                                .required(true)
+                                .content(
+                                    Content()
+                                        .addMediaType(
+                                            jsonMediaType, MediaType()
+                                                .schema(
+                                                    SpringDocAnnotationsUtils.resolveSchemaFromType(
+                                                        PasswordLogin::class.java,
+                                                        it.components,
+                                                        null,
+                                                    ).required(listOf("email", "password"))
+                                                )
+                                        )
+                                )
+                        )
+                        .responses(
+                            ApiResponses()
+                                .addApiResponse(
+                                    "default", ApiResponse()
+                                        .description("Login a Customer via E-Mail and Password")
+                                        .content(
+                                            Content()
+                                                .addMediaType(jsonMediaType, MediaType().schema(ObjectSchema()))
+                                        )
+                                )
+                        )
+                )
+        )
     }
 }
