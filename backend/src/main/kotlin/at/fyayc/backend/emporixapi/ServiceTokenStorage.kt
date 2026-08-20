@@ -7,6 +7,7 @@ import at.fyayc.emporixapi.auth.token.ServiceToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
+import kotlin.time.Duration.Companion.seconds
 
 @Service
 class ServiceTokenStorage(
@@ -41,7 +42,7 @@ class ServiceTokenStorage(
      */
     override fun lockingRefresh(token: LeasedServiceToken) {
         return synchronized(this) {
-            if (isTokenExpired(load())) {
+            if (load().isTokenExpired(margin = marginInSeconds.seconds)) {
                 store(newToken())
             }
         }

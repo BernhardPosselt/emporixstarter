@@ -16,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.springframework.integration.redis.util.RedisLockRegistry
 import org.springframework.stereotype.Service
+import kotlin.time.Duration.Companion.seconds
 
 @Service
 class SessionTokenStorage(
@@ -91,14 +92,14 @@ class SessionTokenStorage(
         }
         redisLockRegistry.executeLocked<Exception>("checkSessionTokenRefresh:${type}:${token.token.accessToken}") {
             val currentToken = this.load()
-            if (isRefreshTokenExpired(token)) {
+            if (token.isRefreshTokenExpired(marginInSeconds.seconds)) {
                 when (token) {
                     // if an anonymous refresh token expires, we must
                     // request a new one losing the current cart
                     is LeasedAnonymousToken -> newAnonymousToken()
                     is LeasedCustomerToken -> throw CustomerTokenRefreshFailed()
                 }
-            } else if (isTokenExpired(currentToken)) {
+            } else if (currentToken.isTokenExpired(marginInSeconds.seconds)) {
                 store(
                     when (token) {
                         is LeasedCustomerToken -> refreshCustomerToken(token)
