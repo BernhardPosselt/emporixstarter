@@ -22,7 +22,14 @@ abstract class BaseTokenStorage<T : OAuthToken, LT : LeasedToken<T>>(
     abstract fun store(token: LT)
 
     protected fun isTokenExpired(token: LT): Boolean =
-        token.createdAt.plus(marginInSeconds.seconds) > Clock.System.now()
+        (token.createdAt +
+                token.token.expiresIn.seconds +
+                marginInSeconds.seconds) > Clock.System.now()
+
+    protected fun isRefreshTokenExpired(token: LT): Boolean =
+        (token.createdAt +
+                token.token.refreshTokenExpiresIn.seconds +
+                marginInSeconds.seconds) > Clock.System.now()
 
     protected abstract fun load(): LT
     protected abstract fun lockingRefresh(token: LT)

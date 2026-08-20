@@ -2,6 +2,7 @@ package at.fyayc.backend
 
 import at.fyayc.backend.emporixapi.SessionTokenStorage
 import at.fyayc.backend.security.AuthenticationFilterDsl
+import at.fyayc.backend.security.auth.CustomerTokenRefreshFailedFilter
 import at.fyayc.backend.security.auth.EmporixLoginService
 import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticationProvider
 import at.fyayc.backend.security.auth.password.EmporixUsernamePasswordFilter
@@ -22,9 +23,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
+import org.springframework.security.web.session.SessionManagementFilter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -96,6 +97,7 @@ class WebSecurityConfiguration {
                     maxSessionsPreventsLogin = true
                 }
             }
+            addFilterAfter<SessionManagementFilter>(CustomerTokenRefreshFailedFilter())
             logout {
                 // TODO: needs to call https://developer.emporix.io/api-references/api-guides/companies-and-customers/customer-management/api-reference/authentication-and-authorization#get-customer-tenant-logout
                 addLogoutHandler(HeaderWriterLogoutHandler(ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES)))

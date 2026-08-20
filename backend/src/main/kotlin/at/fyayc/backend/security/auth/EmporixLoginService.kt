@@ -5,6 +5,7 @@ import at.fyayc.emporixapi.auth.CustomerCredentials
 import at.fyayc.emporixapi.auth.CustomerOAuthClient
 import at.fyayc.emporixapi.auth.IAMClient
 import at.fyayc.emporixapi.auth.token.AnonymousToken
+import at.fyayc.emporixapi.auth.token.CustomerToken
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import at.fyayc.emporixapi.customer.CustomerClient
 import at.fyayc.emporixapi.http.ApiError
@@ -23,17 +24,25 @@ class EmporixLoginService(
     private val customerClient: CustomerClient,
     private val serviceTokenStorage: ServiceTokenStorage,
 ) {
-    fun login(email: String, password: String, token: AnonymousToken): Pair<User, LeasedCustomerToken> {
+    fun login(email: String, password: String, anonymousToken: AnonymousToken): Pair<User, LeasedCustomerToken> {
         return runBlocking(Dispatchers.Default) {
             try {
-                val token = customerOAuthClient.login(
+                val leasedCustomerToken = customerOAuthClient.login(
                     credentials = CustomerCredentials(
                         email = email,
                         password = password,
                     ),
-                    token
+                    anonymousToken
                 )
-                retrieveUser(token) to token
+                val cartMergeDeferred = async {
+                    mergeCarts(
+                        anonymousToken = anonymousToken,
+                        leasedCustomerToken = leasedCustomerToken.token,
+                    )
+                }
+                val userDeferred = async { retrieveUser(leasedCustomerToken) to leasedCustomerToken }
+                cartMergeDeferred.await()
+                userDeferred.await()
             } catch (e: ApiError) {
                 throw EmporixLoginFailedException("Invalid credentials", e)
             }
@@ -42,6 +51,13 @@ class EmporixLoginService(
 
     fun login(token: LeasedCustomerToken): Pair<User, LeasedCustomerToken> = runBlocking(Dispatchers.Default) {
         retrieveUser(token) to token
+    }
+
+    private suspend fun mergeCarts(
+        anonymousToken: AnonymousToken,
+        leasedCustomerToken: CustomerToken,
+    ) {
+        // TODO
     }
 
     private suspend fun retrieveUser(
