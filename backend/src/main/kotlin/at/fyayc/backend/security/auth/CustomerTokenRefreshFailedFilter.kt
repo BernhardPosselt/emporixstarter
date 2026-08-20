@@ -3,6 +3,7 @@ package at.fyayc.backend.security.auth
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler
 import org.springframework.web.filter.OncePerRequestFilter
@@ -23,7 +24,7 @@ class CustomerTokenRefreshFailedFilter : OncePerRequestFilter() {
             val auth = this.securityContextHolderStrategy.context.authentication
             logoutHandler.logout(request, response, auth)
             // TODO: this does not work if the response is streamed since headers are already sent
-            response.sendError(401)
+            response.status = HttpStatus.UNAUTHORIZED.value()
         }
     }
 }

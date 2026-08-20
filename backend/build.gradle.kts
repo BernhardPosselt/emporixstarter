@@ -1,11 +1,12 @@
 import at.fyayc.tasks.CreateDevProfile
 
 plugins {
+    id("at.fyayc.kotlin-jvm-conventions")
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.spring.boot)
+    alias(libs.plugins.springdoc)
     alias(libs.plugins.spring.boot.dependency)
     alias(libs.plugins.kotlin.serialization)
-    id("at.fyayc.kotlin-jvm-conventions")
 }
 
 version = "0.0.1"
@@ -45,3 +46,8 @@ tasks.register<CreateDevProfile>("createDevProfile") {
     file = layout.projectDirectory.file("src/main/resources/application-dev.yml")
 }
 
+openApi {
+    customBootRun {
+        args = listOf("--spring.profiles.active=dev")
+    }
+}
