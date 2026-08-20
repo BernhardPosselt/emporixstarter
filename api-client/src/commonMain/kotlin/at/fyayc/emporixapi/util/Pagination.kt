@@ -17,7 +17,6 @@ data class Pagination(
         val sorted = sort
             .joinToString(",") { it.serialize() }
             .takeIf { it.isNotBlank() }
-        val pageSize = pageSize
         return flow {
             var i = pageNumber
             var pageResult: List<T>
@@ -25,7 +24,7 @@ data class Pagination(
                 pageResult = fetchPage(CurrentPage(i, pageSize, sorted))
                 emitAll(pageResult.asFlow())
                 i += 1
-            } while (pageResult.isNotEmpty())
+            } while (pageResult.size == pageSize)
         }
     }
 }
