@@ -1,5 +1,6 @@
 package at.fyayc.backend.security.auth.sso
 
+import at.fyayc.backend.security.auth.CustomerAuthenticationSuccessHandler
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -17,10 +18,15 @@ import kotlin.time.Clock
 class EmporixSSOFilter(
     private val json: Json,
     authenticationManager: AuthenticationManager,
+    customerAuthenticationSuccessHandler: CustomerAuthenticationSuccessHandler,
 ) : AbstractAuthenticationProcessingFilter(
     PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, "/sso"),
     authenticationManager,
 ) {
+    init {
+        setAuthenticationSuccessHandler(customerAuthenticationSuccessHandler)
+    }
+
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
         // TODO: what do we return on a success? or a failure?
         if (request.contentType != MediaType.APPLICATION_JSON_VALUE) {

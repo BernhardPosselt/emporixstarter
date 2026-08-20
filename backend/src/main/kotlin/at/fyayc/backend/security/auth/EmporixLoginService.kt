@@ -81,7 +81,7 @@ class EmporixLoginService(
                 UserGroup(
                     id = "ROLE_${it.id}",
                     // TODO: how do we determine the group name? do we want to store translated names as well? do we want a fallback?
-                    name = it.name[LanguageIso.EN] ?: throw Exception()
+                    name = it.name[LanguageIso.en] ?: throw Exception()
                 )
             },
             isOnHold = userInfo.onHold,

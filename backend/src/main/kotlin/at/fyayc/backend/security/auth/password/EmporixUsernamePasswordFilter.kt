@@ -1,5 +1,6 @@
 package at.fyayc.backend.security.auth.password
 
+import at.fyayc.backend.security.auth.CustomerAuthenticationSuccessHandler
 import at.fyayc.backend.util.logger
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -19,11 +20,16 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 class EmporixUsernamePasswordFilter(
     private val json: Json,
     authenticationManager: AuthenticationManager,
+    customerAuthenticationSuccessHandler: CustomerAuthenticationSuccessHandler,
 ) : AbstractAuthenticationProcessingFilter(
     PathPatternRequestMatcher.withDefaults()
         .matcher(HttpMethod.POST, "/login"),
     authenticationManager,
 ) {
+    init {
+        setAuthenticationSuccessHandler(customerAuthenticationSuccessHandler)
+    }
+
     companion object {
         val log = logger()
     }

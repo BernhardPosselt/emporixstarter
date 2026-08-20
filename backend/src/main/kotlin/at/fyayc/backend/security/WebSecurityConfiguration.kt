@@ -2,8 +2,10 @@ package at.fyayc.backend.security
 
 import at.fyayc.backend.BackendProperties
 import at.fyayc.backend.emporixapi.SessionTokenStorage
+import at.fyayc.backend.security.auth.CustomerAuthenticationSuccessHandler
 import at.fyayc.backend.security.auth.CustomerTokenRefreshFailedFilter
 import at.fyayc.backend.security.auth.EmporixLoginService
+import at.fyayc.backend.security.auth.LoginSuccess
 import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticationProvider
 import at.fyayc.backend.security.auth.password.EmporixUsernamePasswordFilter
 import at.fyayc.backend.security.auth.password.PasswordLogin
@@ -13,7 +15,6 @@ import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.PathItem
 import io.swagger.v3.oas.models.media.Content
 import io.swagger.v3.oas.models.media.MediaType
-import io.swagger.v3.oas.models.media.ObjectSchema
 import io.swagger.v3.oas.models.parameters.RequestBody
 import io.swagger.v3.oas.models.responses.ApiResponse
 import io.swagger.v3.oas.models.responses.ApiResponses
@@ -83,6 +84,7 @@ class WebSecurityConfiguration {
         http: HttpSecurity,
         emporixLoginService: EmporixLoginService,
         sessionTokenStorage: SessionTokenStorage,
+        customerAuthenticationSuccessHandler: CustomerAuthenticationSuccessHandler,
         json: Json,
     ): SecurityFilterChain {
         http {
@@ -126,8 +128,8 @@ class WebSecurityConfiguration {
         )
         http.apply(
             AuthenticationFilterDsl(
-                { EmporixSSOFilter(json, it) },
-                { EmporixUsernamePasswordFilter(json, it) },
+                { EmporixSSOFilter(json, it, customerAuthenticationSuccessHandler) },
+                { EmporixUsernamePasswordFilter(json, it, customerAuthenticationSuccessHandler) },
             )
         )
         return http.build()
@@ -179,12 +181,26 @@ class WebSecurityConfiguration {
                         .responses(
                             ApiResponses()
                                 .addApiResponse(
-                                    "default", ApiResponse()
+                                    "200", ApiResponse()
                                         .description("Login a Customer via E-Mail and Password")
                                         .content(
                                             Content()
-                                                .addMediaType(jsonMediaType, MediaType().schema(ObjectSchema()))
+                                                .addMediaType(
+                                                    jsonMediaType,
+                                                    MediaType()
+                                                        .schema(
+                                                            SpringDocAnnotationsUtils.resolveSchemaFromType(
+                                                                LoginSuccess::class.java,
+                                                                it.components,
+                                                                null,
+                                                            ).required(listOf("languageIso", "currencyIso"))
+                                                        )
+                                                )
                                         )
+                                )
+                                .addApiResponse(
+                                    "403", ApiResponse()
+                                        .description("If anything fails")
                                 )
                         )
                 )
