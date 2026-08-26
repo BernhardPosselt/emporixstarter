@@ -1,8 +1,8 @@
 package at.fyayc.backend.emporixapi
 
-import at.fyayc.emporixapi.session.CountryIso
-import at.fyayc.emporixapi.session.CurrencyIso
-import at.fyayc.emporixapi.util.LanguageIso
+import at.fyayc.emporixapi.i18n.CountryIso
+import at.fyayc.emporixapi.i18n.CurrencyIso
+import at.fyayc.emporixapi.i18n.LanguageIso
 import jakarta.servlet.http.HttpSession
 import org.springframework.stereotype.Service
 

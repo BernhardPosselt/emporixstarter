@@ -1,6 +1,6 @@
 package at.fyayc.emporixapi.customer
 
-import at.fyayc.emporixapi.session.CountryIso
+import at.fyayc.emporixapi.i18n.CountryIso
 import at.fyayc.emporixapi.session.Metadata
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject

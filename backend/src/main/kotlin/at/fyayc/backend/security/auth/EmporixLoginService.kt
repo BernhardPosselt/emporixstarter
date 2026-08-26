@@ -9,7 +9,7 @@ import at.fyayc.emporixapi.auth.token.CustomerToken
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import at.fyayc.emporixapi.customer.CustomerClient
 import at.fyayc.emporixapi.http.ApiError
-import at.fyayc.emporixapi.util.LanguageIso
+import at.fyayc.emporixapi.i18n.LanguageKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -81,7 +81,7 @@ class EmporixLoginService(
                 UserGroup(
                     id = "ROLE_${it.id}",
                     // TODO: how do we determine the group name? do we want to store translated names as well? do we want a fallback?
-                    name = it.name[LanguageIso.en] ?: throw Exception()
+                    name = it.name[LanguageKey.en] ?: throw Exception()
                 )
             },
             isOnHold = userInfo.onHold,

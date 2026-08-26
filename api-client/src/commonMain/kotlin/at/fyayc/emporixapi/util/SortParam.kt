@@ -1,5 +1,7 @@
 package at.fyayc.emporixapi.util
 
+import at.fyayc.emporixapi.i18n.LanguageIso
+
 data class SortParam(
     val fieldName: String,
     val order: SortOrder? = null,

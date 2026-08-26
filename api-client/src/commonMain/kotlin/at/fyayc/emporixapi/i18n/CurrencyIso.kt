@@ -1,4 +1,4 @@
-package at.fyayc.emporixapi.session
+package at.fyayc.emporixapi.i18n
 
 enum class CurrencyIso {
     EUR,

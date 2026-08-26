@@ -1,15 +1,10 @@
-package at.fyayc.emporixapi.util
+package at.fyayc.emporixapi.i18n
 
 import kotlin.enums.enumEntries
 
-@Suppress("EnumEntryName")
 enum class LanguageIso {
-    de,
-    en,
-    en_US,
-    de_DE,
-    de_AT,
-    de_CH;
+    DE,
+    EN;
 
     companion object {
         fun fromIso(isoCode: String) =

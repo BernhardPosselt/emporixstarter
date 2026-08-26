@@ -1,15 +1,15 @@
 package at.fyayc.emporixapi.auth
 
+import at.fyayc.emporixapi.i18n.TranslatedValue
 import at.fyayc.emporixapi.session.Metadata
-import at.fyayc.emporixapi.util.TranslatedString
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class UserGroup(
     val id: String,
-    val name: TranslatedString,
-    val description: TranslatedString?,
+    val name: TranslatedValue<String>,
+    val description: TranslatedValue<String>?,
     val vendorId: String?,
     val accessControls: List<String> = emptyList(),
     val templates: List<String> = emptyList(),

@@ -13,7 +13,7 @@ spring:
     data:
       redis:
         namespace: "spring:session"
-        # we might need this if we want to sync updates from emporix into user sessions
+        # we might need this if we want to sync updates from Emporix into user sessions
         # enabling this however locks us out of redis clustering, see https://docs.spring.io/spring-session/reference/configuration/redis.html#choosing-between-regular-and-indexed
         # ideally we go for indexed without clustering
         # repository-type: indexed

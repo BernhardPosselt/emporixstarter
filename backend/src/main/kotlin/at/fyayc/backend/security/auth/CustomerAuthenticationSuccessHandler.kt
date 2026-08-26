@@ -3,9 +3,9 @@ package at.fyayc.backend.security.auth
 import at.fyayc.backend.emporixapi.SessionStorage
 import at.fyayc.backend.emporixapi.SessionTokenStorage
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
-import at.fyayc.emporixapi.session.CurrencyIso
+import at.fyayc.emporixapi.i18n.CurrencyIso
+import at.fyayc.emporixapi.i18n.LanguageIso
 import at.fyayc.emporixapi.session.SessionClient
-import at.fyayc.emporixapi.util.LanguageIso
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import kotlinx.coroutines.runBlocking
@@ -38,7 +38,7 @@ class CustomerAuthenticationSuccessHandler(
             sessionStorage.language = emporixSession.language
             sessionStorage.sessionId = emporixSession.sessionId
             sessionStorage.customerId = emporixSession.customerId
-            sessionStorage.siteCode = emporixSession.siteCode
+            sessionStorage.siteCode = emporixSession.siteCode?.name
             sessionStorage.currency = emporixSession.currency
             sessionStorage.cartId = emporixSession.cartId
             sessionStorage.targetLocation = emporixSession.targetLocation
@@ -46,11 +46,10 @@ class CustomerAuthenticationSuccessHandler(
             sessionTokenStorage.store(leasedCustomerToken)
             val requestLocale = request.locale
                 ?.let {
-                    val language = it.language ?: return@let null
-                    val isoCode = listOf(language, it.country).joinToString("_")
+                    val isoCode = listOf(it.language, it.country).joinToString("_")
                     LanguageIso.fromIso(isoCode)
                 }
-                ?: LanguageIso.en_US
+                ?: LanguageIso.EN
             response.status = HttpStatus.OK.value()
             json.encodeToStream(
                 LoginSuccess(
