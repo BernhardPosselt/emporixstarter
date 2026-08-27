@@ -48,6 +48,8 @@ class CustomerAuthenticationSuccessHandler(
                 }
                 ?: LanguageIso.EN
             response.status = HttpStatus.OK.value()
+            // note: this is correct. we must not close the stream or additional headers set after this
+            // call like the session cookie will not be written
             json.encodeToStream(
                 LoginSuccess(
                     languageIso = emporixSession.language ?: requestLocale,
