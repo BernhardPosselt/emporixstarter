@@ -12,5 +12,5 @@ data class CurrentPage(
 fun ParametersBuilder.paginateWith(page: CurrentPage) {
     page.sort?.let { append("sort", it) }
     append("pageSize", page.size.toString())
-    append("page", page.index.toString())
+    append("pageNumber", page.index.toString())
 }

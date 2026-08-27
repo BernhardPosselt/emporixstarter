@@ -16,6 +16,7 @@ import kotlin.time.Clock
 class AnonymousOAuthClient(
     private val client: HttpClient,
     private val apiConfig: ApiConfig,
+    private val storefrontClientId: String,
 ) {
     suspend fun login(
         language: LanguageIso? = null,
@@ -26,7 +27,7 @@ class AnonymousOAuthClient(
         val response = client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customerlogin", "auth", "anonymous", "login")
-                parameters.append("client_id", apiConfig.clientId)
+                parameters.append("client_id", storefrontClientId)
                 parameters.append("tenant", apiConfig.tenant)
                 language?.let { parameters.append("language", it.name) }
                 currency?.let { parameters.append("currency", it.name) }
@@ -46,7 +47,7 @@ class AnonymousOAuthClient(
             url {
                 appendPathSegments("customerlogin", "auth", "anonymous", "refresh")
                 parameters.append("tenant", apiConfig.tenant)
-                parameters.append("client_id", apiConfig.clientId)
+                parameters.append("client_id", storefrontClientId)
                 parameters.append("anonymous_token", token.accessToken)
                 parameters.append("refresh_token", token.refreshToken)
             }

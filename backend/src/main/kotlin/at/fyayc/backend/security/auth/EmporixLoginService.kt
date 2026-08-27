@@ -22,7 +22,7 @@ class EmporixLoginService(
     private val customerOAuthClient: CustomerOAuthClient,
     private val iamClient: IAMClient,
     private val customerClient: CustomerClient,
-    private val serviceTokenStorage: ServiceTokenStorage,
+    private val emporixTokenStorage: ServiceTokenStorage,
 ) {
     fun login(email: String, password: String, anonymousToken: AnonymousToken): Pair<User, LeasedCustomerToken> {
         return runBlocking(Dispatchers.Default) {
@@ -63,15 +63,15 @@ class EmporixLoginService(
     private suspend fun retrieveUser(
         leasedCustomerToken: LeasedCustomerToken
     ): User = coroutineScope {
-        val leasedServiceToken = serviceTokenStorage.retrieve()
+        val leasedEmporixToken = emporixTokenStorage.retrieve()
         // Emporix does not return login status and your own groups in this response
         // furthermore, we can't use the userId returned from emporixSession since Emporix
         // requires the customerNumber which needs to be looked up with the following call
         val myProfileDeferred = async { customerClient.getOwnProfile(leasedCustomerToken.token) }
         val myProfile = myProfileDeferred.await()
-        val userInfoDeferred = async { customerClient.getProfile(myProfile.customerNumber, leasedServiceToken.token) }
+        val userInfoDeferred = async { customerClient.getProfile(myProfile.customerNumber, leasedEmporixToken.token) }
         val userGroupsDeferred = async {
-            iamClient.getUserGroups(myProfile.id, leasedServiceToken.token)
+            iamClient.getUserGroups(myProfile.id, leasedEmporixToken.token)
                 .toList()
         }
         val userInfo = userInfoDeferred.await() ?: throw EmporixLoginFailedException("No Customer Found")

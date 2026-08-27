@@ -30,13 +30,12 @@ class CustomerClient(
         }.parseOrThrow<OwnCustomer>()
     }
 
-    // note: expand is not implemented
     suspend fun getProfile(
         customerNumber: String,
         serviceToken: ServiceToken,
         expand: List<String>? = null,
     ): TenantManagedCustomer? {
-        return client.post(apiConfig.baseUrl) {
+        return client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customer", apiConfig.tenant, "customers", customerNumber)
                 expand?.let {

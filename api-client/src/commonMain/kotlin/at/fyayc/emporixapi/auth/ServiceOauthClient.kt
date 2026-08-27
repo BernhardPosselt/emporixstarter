@@ -3,6 +3,7 @@ package at.fyayc.emporixapi.auth
 import at.fyayc.emporixapi.auth.token.LeasedServiceToken
 import at.fyayc.emporixapi.auth.token.ServiceToken
 import at.fyayc.emporixapi.http.ApiConfig
+import at.fyayc.emporixapi.http.OauthClientConfig
 import at.fyayc.emporixapi.http.parseOrThrow
 import io.ktor.client.*
 import io.ktor.client.request.forms.*
@@ -12,19 +13,17 @@ import kotlin.time.Clock
 class ServiceOauthClient(
     private val client: HttpClient,
     private val apiConfig: ApiConfig,
+    private val oauthClientConfig: OauthClientConfig,
 ) {
     suspend fun login(): LeasedServiceToken {
         val response = client.submitForm(
             apiConfig.baseUrl,
             formParameters = parameters {
                 append("tenant", apiConfig.tenant)
-                append("client_id", apiConfig.clientId)
-                append("client_secret", apiConfig.clientSecret)
+                append("client_id", oauthClientConfig.id)
+                append("client_secret", oauthClientConfig.secret)
                 append("grant_type", "client_credentials")
-                append(
-                    "scope", apiConfig.clientScopes
-                        .entries
-                        .joinToString(" ") { (key, value) -> "$key=$value" })
+                append("scope", oauthClientConfig.scopes.joinToString(" "))
             }
         ) {
             url {

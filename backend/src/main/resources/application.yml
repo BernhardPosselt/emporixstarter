@@ -26,12 +26,19 @@ backend:
   emporix-api:
     timeout-millis: 55000 # this must be shorter than the redis lock timeout
     oauth:
+      refresh-margin-in-seconds: 120
       storefront:
         # anonymous tokens only can be refreshed for 24 hours and live for 1 hour
-        refresh-margin-in-seconds: 120
         client-id: "EsEnhsDGx2mC89leN5KyymlGcMj9FRhueAaKI8vE5l2b284f"
         client-scopes:
-          tenant: "${backend.tenant}"
+          - "tenant=${backend.tenant}"
+      emporix:
+        client-id: "XH5ej9Tpdlg1SaI1vosMSowEYyvsTMsz1iGIi3B3qaYKIVBU"
+        client-scopes:
+          - "iam.group_read"
+          - "customer.customer_read"
+          - "tenant=${backend.tenant}"
+
   users:
     actuator:
       login: "actuator"

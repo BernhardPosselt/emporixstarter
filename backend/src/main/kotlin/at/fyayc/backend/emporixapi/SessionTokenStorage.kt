@@ -26,7 +26,7 @@ class SessionTokenStorage(
     private val customerOAuthClient: CustomerOAuthClient,
     private val redisLockRegistry: RedisLockRegistry,
     private val json: Json,
-) : BaseTokenStorage<SessionToken, LeasedSessionToken>(properties.emporixApi.oauth.storefront.refreshMarginInSeconds) {
+) : BaseTokenStorage<SessionToken, LeasedSessionToken>(properties.emporixApi.oauth.refreshMarginInSeconds) {
     companion object {
         private val log = logger()
     }

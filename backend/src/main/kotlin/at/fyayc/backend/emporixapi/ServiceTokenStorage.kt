@@ -1,19 +1,16 @@
 package at.fyayc.backend.emporixapi
 
-import at.fyayc.backend.BackendProperties
 import at.fyayc.emporixapi.auth.ServiceOauthClient
 import at.fyayc.emporixapi.auth.token.LeasedServiceToken
 import at.fyayc.emporixapi.auth.token.ServiceToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import org.springframework.stereotype.Service
 import kotlin.time.Duration.Companion.seconds
 
-@Service
 class ServiceTokenStorage(
-    val oauthClient: ServiceOauthClient,
-    properties: BackendProperties,
-) : BaseTokenStorage<ServiceToken, LeasedServiceToken>(properties.emporixApi.oauth.storefront.refreshMarginInSeconds) {
+    private val oauthClient: ServiceOauthClient,
+    refreshMarginInSeconds: Int,
+) : BaseTokenStorage<ServiceToken, LeasedServiceToken>(refreshMarginInSeconds) {
     private var token: LeasedServiceToken? = null
 
     override fun load(): LeasedServiceToken {

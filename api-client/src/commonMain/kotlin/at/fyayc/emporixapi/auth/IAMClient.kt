@@ -22,7 +22,7 @@ class IAMClient(
     ): Flow<UserGroup> = pagination.paginate { currentPage ->
         client.get(apiConfig.baseUrl) {
             url {
-                appendPathSegments("iam", apiConfig.tenant, userId, "groups")
+                appendPathSegments("iam", apiConfig.tenant, "users", userId, "groups")
                 parameters.paginateWith(currentPage)
             }
             bearerAuth(serviceToken.accessToken)

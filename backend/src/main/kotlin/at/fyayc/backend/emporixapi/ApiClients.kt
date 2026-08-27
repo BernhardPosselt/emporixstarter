@@ -1,6 +1,7 @@
 package at.fyayc.backend.emporixapi
 
 import at.fyayc.backend.BackendProperties
+import at.fyayc.backend.toClientConfig
 import at.fyayc.emporixapi.auth.AnonymousOAuthClient
 import at.fyayc.emporixapi.auth.CustomerOAuthClient
 import at.fyayc.emporixapi.auth.IAMClient
@@ -23,15 +24,9 @@ import org.springframework.integration.redis.util.RedisLockRegistry
 @Configuration
 class ApiClients {
     @Bean
-    fun apiConfig(properties: BackendProperties): ApiConfig {
-        val oauth = properties.emporixApi.oauth
-        return ApiConfig(
-            tenant = properties.tenant,
-            clientId = oauth.storefront.clientId,
-            clientSecret = oauth.storefront.clientSecret,
-            clientScopes = oauth.storefront.clientScopes,
-        )
-    }
+    fun apiConfig(properties: BackendProperties) = ApiConfig(
+        tenant = properties.tenant,
+    )
 
     @Bean
     fun httpClient(properties: BackendProperties) = HttpClient {
@@ -52,21 +47,54 @@ class ApiClients {
     }.also { it.registerOEInterceptors() }
 
     @Bean
-    fun serviceOAuthClient(
+    fun storefrontOAuthClient(
         apiConfig: ApiConfig,
         httpClient: HttpClient,
+        properties: BackendProperties,
     ) = ServiceOauthClient(
         client = httpClient,
-        apiConfig = apiConfig
+        apiConfig = apiConfig,
+        oauthClientConfig = properties.emporixApi.oauth.storefront.toClientConfig()
+    )
+
+    @Bean
+    fun storefrontTokenStorage(
+        storefrontOAuthClient: ServiceOauthClient,
+        properties: BackendProperties,
+    ) = ServiceTokenStorage(
+        oauthClient = storefrontOAuthClient,
+        refreshMarginInSeconds = properties.emporixApi.oauth.refreshMarginInSeconds,
+    )
+
+    @Bean
+    fun emporixOAuthClient(
+        apiConfig: ApiConfig,
+        httpClient: HttpClient,
+        properties: BackendProperties,
+    ) = ServiceOauthClient(
+        client = httpClient,
+        apiConfig = apiConfig,
+        oauthClientConfig = properties.emporixApi.oauth.emporix.toClientConfig()
+    )
+
+    @Bean
+    fun emporixTokenStorage(
+        emporixOAuthClient: ServiceOauthClient,
+        properties: BackendProperties,
+    ) = ServiceTokenStorage(
+        oauthClient = emporixOAuthClient,
+        refreshMarginInSeconds = properties.emporixApi.oauth.refreshMarginInSeconds,
     )
 
     @Bean
     fun anonymousOAuthClient(
         apiConfig: ApiConfig,
         httpClient: HttpClient,
+        properties: BackendProperties,
     ) = AnonymousOAuthClient(
         client = httpClient,
         apiConfig = apiConfig,
+        storefrontClientId = properties.emporixApi.oauth.storefront.clientId,
     )
 
     @Bean

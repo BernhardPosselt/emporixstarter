@@ -16,7 +16,7 @@ data class UserGroup(
     val code: String?,
     val userType: UserType = UserType.CUSTOMER,
     val b2b: JsonObject?,
-    val restrictions: List<String>,
-    val mixins: JsonObject,
+    val restrictions: List<String> = emptyList(),
+    val mixins: JsonObject?,
     val metadata: Metadata,
 )
