@@ -27,6 +27,7 @@ class CustomerAuthenticationSuccessHandler(
         response: HttpServletResponse,
         authentication: Authentication
     ) {
+        // TODO: check if user receives a new session cookie
         if (authentication is CustomerAuthenticationToken) {
             val leasedCustomerToken = authentication.token
             val emporixSession = runBlocking {
