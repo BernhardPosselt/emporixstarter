@@ -11,7 +11,7 @@ data class User(
 ) : UserDetails {
     override fun getAuthorities(): Collection<GrantedAuthority> = groups
 
-    override fun getPassword() = null // TODO: is this correct?
+    override fun getPassword() = null
 
     override fun getUsername(): String = userId
 

@@ -18,10 +18,14 @@ data class BackendProperties(
         val oauth: OAuth,
     ) {
         data class OAuth(
-            val clientId: String,
-            val clientSecret: String,
-            val clientScopes: Map<String, String>,
-            val refreshMarginInSeconds: Int,
-        )
+            val storefront: OAuthClient,
+        ) {
+            data class OAuthClient(
+                val clientId: String,
+                val clientSecret: String,
+                val clientScopes: Map<String, String>,
+                val refreshMarginInSeconds: Int,
+            )
+        }
     }
 }
