@@ -1,18 +1,18 @@
-package at.fyayc.backend.security.auth.sso
+package at.fyayc.backend.security.auth
 
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 
-class SSOLoginToken(
-    private val principalObj: Any? = null,
-    private val credentialsObj: LeasedCustomerToken,
-    authorities: Collection<GrantedAuthority>? = null
+class CustomerAuthenticationToken(
+    private val user: User?,
+    val token: LeasedCustomerToken,
+    authorities: Collection<GrantedAuthority>?,
 ) : AbstractAuthenticationToken(authorities) {
-    override fun getCredentials() = credentialsObj
+    override fun getCredentials() = null
 
-    override fun getPrincipal() = principalObj
+    override fun getPrincipal() = user
 
     init {
         super.setAuthenticated(this.authorities != AuthorityUtils.NO_AUTHORITIES)

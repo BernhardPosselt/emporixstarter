@@ -1,6 +1,7 @@
 package at.fyayc.backend.security.auth.sso
 
 import at.fyayc.backend.security.auth.CustomerAuthenticationSuccessHandler
+import at.fyayc.backend.security.auth.CustomerAuthenticationToken
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -33,11 +34,13 @@ class EmporixSSOFilter(
             throw AuthenticationServiceException("Only JSON POST requests are supported to log in")
         }
         val credentials = json.decodeFromStream<SSOLogin>(request.inputStream)
-        val authRequest = SSOLoginToken(
-            credentialsObj = LeasedCustomerToken(
+        val authRequest = CustomerAuthenticationToken(
+            user = null,
+            token = LeasedCustomerToken(
                 token = credentials.token,
                 createdAt = Clock.System.now(),
-            )
+            ),
+            authorities = null,
         )
         authRequest.details = this.authenticationDetailsSource.buildDetails(request)
         return this.getAuthenticationManager().authenticate(authRequest)

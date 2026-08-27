@@ -2,6 +2,7 @@ package at.fyayc.backend.security.auth.password
 
 import at.fyayc.backend.emporixapi.SessionTokenStorage
 import at.fyayc.backend.security.auth.AlreadyLoggedInException
+import at.fyayc.backend.security.auth.CustomerAuthenticationToken
 import at.fyayc.backend.security.auth.EmporixLoginService
 import at.fyayc.emporixapi.auth.token.LeasedAnonymousToken
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
@@ -24,7 +25,7 @@ class EmporixPasswordLoginAuthenticationProvider(
                 authentication.credentials.toString(),
                 anonymousToken
             )
-            UsernamePasswordAuthenticationToken(user, token, user.authorities)
+            CustomerAuthenticationToken(user, token, user.authorities)
         } else {
             null
         }
