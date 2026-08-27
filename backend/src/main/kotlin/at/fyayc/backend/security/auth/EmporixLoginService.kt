@@ -44,7 +44,7 @@ class EmporixLoginService(
                 cartMergeDeferred.await()
                 userDeferred.await()
             } catch (e: ApiError) {
-                throw EmporixLoginFailedException("Invalid credentials", e)
+                throw EmporixLoginFailedException("Failed to perform login", e)
             }
         }
     }

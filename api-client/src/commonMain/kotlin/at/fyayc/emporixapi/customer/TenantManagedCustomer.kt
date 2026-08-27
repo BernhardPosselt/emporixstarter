@@ -1,7 +1,7 @@
 package at.fyayc.emporixapi.customer
 
 import at.fyayc.emporixapi.i18n.CurrencyIso
-import at.fyayc.emporixapi.i18n.LanguageIso
+import at.fyayc.emporixapi.i18n.LanguageAndCountryIso
 import at.fyayc.emporixapi.session.Metadata
 import at.fyayc.emporixapi.site.SiteCode
 import kotlinx.serialization.Serializable
@@ -16,7 +16,7 @@ data class TenantManagedCustomer(
     val lastName: String?,
     val contactPhone: String?,
     val company: String?,
-    val preferredLanguage: LanguageIso?,
+    val preferredLanguage: LanguageAndCountryIso?,
     val preferredCurrency: CurrencyIso?,
     val preferredSite: SiteCode?,
     val type: CustomerType = CustomerType.CUSTOMER,

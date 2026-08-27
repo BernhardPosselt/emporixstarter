@@ -18,7 +18,7 @@ class CustomerClient(
         serviceToken: CustomerToken,
         expand: List<String>? = null
     ): OwnCustomer {
-        return client.post(apiConfig.baseUrl) {
+        return client.get(apiConfig.baseUrl) {
             url {
                 appendPathSegments("customer", apiConfig.tenant, "me")
                 expand?.let {

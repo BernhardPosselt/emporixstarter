@@ -2,8 +2,10 @@ package at.fyayc.emporixapi.customer
 
 import at.fyayc.emporixapi.i18n.CurrencyIso
 import at.fyayc.emporixapi.i18n.LanguageIso
+import at.fyayc.emporixapi.i18n.LanguageIsoSerializer
 import at.fyayc.emporixapi.session.Metadata
 import at.fyayc.emporixapi.site.SiteCode
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 import kotlin.time.Instant
@@ -16,6 +18,7 @@ data class OwnCustomer(
     val lastName: String?,
     val contactPhone: String?,
     val company: String?,
+    @Serializable(with = LanguageIsoSerializer::class)
     val preferredLanguage: LanguageIso?,
     val preferredCurrency: CurrencyIso?,
     val preferredSite: SiteCode?,
@@ -27,10 +30,11 @@ data class OwnCustomer(
     val restriction: String?,
     val customerNumber: String,
     val id: String,
-    val defaultAddress: Address,
+    val defaultAddress: Address?,
     val accounts: List<AccountId> = emptyList(),
     val contactEmail: String?,
-    val email: String,
     val businessModel: BusinessModel = BusinessModel.B2C,
     val lastLogin: Instant,
+    @SerialName("session_id")
+    val sessionId: String,
 )

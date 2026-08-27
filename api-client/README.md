@@ -1,4 +1,10 @@
-# Multiplatform Lib
+# Why?
+
+Why not generate the API client from the swagger docs? Because the docs are frequently wrong and need manual fixing
+
+Why not pick a library instead? Because there is none.
+
+## Multiplatform Lib
 
 First start your local nexus repository
 

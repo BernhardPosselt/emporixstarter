@@ -46,8 +46,7 @@ class CustomerAuthenticationSuccessHandler(
             sessionTokenStorage.store(leasedCustomerToken)
             val requestLocale = request.locale
                 ?.let {
-                    val isoCode = listOf(it.language, it.country).joinToString("_")
-                    LanguageIso.fromIso(isoCode)
+                    LanguageIso.fromIso(it.language.uppercase())
                 }
                 ?: LanguageIso.EN
             response.status = HttpStatus.OK.value()
