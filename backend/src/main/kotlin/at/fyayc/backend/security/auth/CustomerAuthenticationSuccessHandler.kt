@@ -48,15 +48,13 @@ class CustomerAuthenticationSuccessHandler(
                 }
                 ?: LanguageIso.EN
             response.status = HttpStatus.OK.value()
-            response.outputStream.use {
-                json.encodeToStream(
-                    LoginSuccess(
-                        languageIso = emporixSession.language ?: requestLocale,
-                        currencyIso = emporixSession.currency ?: CurrencyIso.EUR
-                    ),
-                    it
-                )
-            }
+            json.encodeToStream(
+                LoginSuccess(
+                    languageIso = emporixSession.language ?: requestLocale,
+                    currencyIso = emporixSession.currency ?: CurrencyIso.EUR
+                ),
+                response.outputStream
+            )
         }
     }
 }
