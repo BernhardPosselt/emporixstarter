@@ -13,7 +13,7 @@ import kotlin.time.Duration.Companion.seconds
 class ServiceTokenStorage(
     val oauthClient: ServiceOauthClient,
     properties: BackendProperties,
-) : BaseTokenStorage<ServiceToken, LeasedServiceToken>(properties.emporixApi.oauth.refreshMarginInSeconds) {
+) : BaseTokenStorage<ServiceToken, LeasedServiceToken>(properties.emporixApi.oauth.storefront.refreshMarginInSeconds) {
     private var token: LeasedServiceToken? = null
 
     override fun load(): LeasedServiceToken {

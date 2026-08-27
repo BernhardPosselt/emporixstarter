@@ -27,9 +27,9 @@ class ApiClients {
         val oauth = properties.emporixApi.oauth
         return ApiConfig(
             tenant = properties.tenant,
-            clientId = oauth.clientId,
-            clientSecret = oauth.clientSecret,
-            clientScopes = oauth.clientScopes,
+            clientId = oauth.storefront.clientId,
+            clientSecret = oauth.storefront.clientSecret,
+            clientScopes = oauth.storefront.clientScopes,
         )
     }
 
