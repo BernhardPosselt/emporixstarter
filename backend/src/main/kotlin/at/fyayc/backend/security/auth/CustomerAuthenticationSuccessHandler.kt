@@ -2,7 +2,6 @@ package at.fyayc.backend.security.auth
 
 import at.fyayc.backend.emporixapi.SessionStorage
 import at.fyayc.backend.emporixapi.SessionTokenStorage
-import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import at.fyayc.emporixapi.i18n.CurrencyIso
 import at.fyayc.emporixapi.i18n.LanguageIso
 import at.fyayc.emporixapi.session.SessionClient
@@ -12,7 +11,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToStream
 import org.springframework.http.HttpStatus
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.stereotype.Component
@@ -29,8 +27,8 @@ class CustomerAuthenticationSuccessHandler(
         response: HttpServletResponse,
         authentication: Authentication
     ) {
-        if (authentication is UsernamePasswordAuthenticationToken) {
-            val leasedCustomerToken = authentication.credentials as LeasedCustomerToken
+        if (authentication is CustomerAuthenticationToken) {
+            val leasedCustomerToken = authentication.token
             val emporixSession = runBlocking {
                 sessionClient.ownSessionContext(leasedCustomerToken.token)
             }
@@ -50,12 +48,15 @@ class CustomerAuthenticationSuccessHandler(
                 }
                 ?: LanguageIso.EN
             response.status = HttpStatus.OK.value()
-            json.encodeToStream(
-                LoginSuccess(
-                    languageIso = emporixSession.language ?: requestLocale,
-                    currencyIso = emporixSession.currency ?: CurrencyIso.EUR,
-                ), response.outputStream
-            )
+            response.outputStream.use {
+                json.encodeToStream(
+                    LoginSuccess(
+                        languageIso = emporixSession.language ?: requestLocale,
+                        currencyIso = emporixSession.currency ?: CurrencyIso.EUR
+                    ),
+                    it
+                )
+            }
         }
     }
 }
