@@ -11,7 +11,4 @@ interface LeasedToken<T : OAuthToken> {
 
     fun isTokenExpired(margin: Duration): Boolean =
         (createdAt + token.expiresIn.seconds + margin) > Clock.System.now()
-
-    fun isRefreshTokenExpired(margin: Duration): Boolean =
-        (createdAt + token.refreshTokenExpiresIn.seconds + margin) > Clock.System.now()
 }

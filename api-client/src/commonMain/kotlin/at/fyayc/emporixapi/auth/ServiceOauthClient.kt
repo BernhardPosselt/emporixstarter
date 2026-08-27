@@ -5,7 +5,7 @@ import at.fyayc.emporixapi.auth.token.ServiceToken
 import at.fyayc.emporixapi.http.ApiConfig
 import at.fyayc.emporixapi.http.parseOrThrow
 import io.ktor.client.*
-import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import kotlin.time.Clock
 
@@ -14,17 +14,21 @@ class ServiceOauthClient(
     private val apiConfig: ApiConfig,
 ) {
     suspend fun login(): LeasedServiceToken {
-        val response = client.post(apiConfig.baseUrl) {
-            url {
-                appendPathSegments("oauth", "token")
-                parameters.append("tenant", apiConfig.tenant)
-                parameters.append("client_id", apiConfig.clientId)
-                parameters.append("client_secret", apiConfig.clientSecret)
-                parameters.append("grant_type", "client_credentials")
-                parameters.append(
+        val response = client.submitForm(
+            apiConfig.baseUrl,
+            formParameters = parameters {
+                append("tenant", apiConfig.tenant)
+                append("client_id", apiConfig.clientId)
+                append("client_secret", apiConfig.clientSecret)
+                append("grant_type", "client_credentials")
+                append(
                     "scope", apiConfig.clientScopes
                         .entries
                         .joinToString(" ") { (key, value) -> "$key=$value" })
+            }
+        ) {
+            url {
+                appendPathSegments("oauth", "token")
             }
             contentType(ContentType.Application.Json)
         }.parseOrThrow<ServiceToken>()

@@ -15,9 +15,26 @@ data class CustomerToken(
     override val refreshToken: String,
     @SerialName("refresh_token_expires_in")
     override val refreshTokenExpiresIn: Int,
-    override val scope: String,
-    val sessionId: String,
+    @SerialName("session_id")
+    override val sessionId: String,
+    @SerialName("saas_token")
     val saasToken: String,
     val initialPassword: Boolean,
+    // deprecated properties
+    @Deprecated("use _ ones")
+    @SerialName("accessToken")
+    val oldAccessToken: String,
+    @Deprecated("use _ ones")
+    @SerialName("expiresIn")
+    val oldExpiresIn: Int,
+    @Deprecated("use _ ones")
+    @SerialName("refreshToken")
+    val oldRefreshToken: String,
+    @Deprecated("use _ ones")
+    @SerialName("refreshTokenExpiresIn")
+    val oldRefreshTokenExpiresIn: Int,
+    @Deprecated("use _ ones")
+    @SerialName("saasToken")
+    val oldSaasToken: String,
 ) : SessionToken
 

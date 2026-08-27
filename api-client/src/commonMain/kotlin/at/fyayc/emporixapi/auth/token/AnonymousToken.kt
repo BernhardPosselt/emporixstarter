@@ -15,6 +15,11 @@ data class AnonymousToken(
     override val refreshToken: String,
     @SerialName("refresh_token_expires_in")
     override val refreshTokenExpiresIn: Int,
-    override val scope: String,
-    val sessionId: String,
+    val scope: String,
+    @SerialName("session_id")
+    override val sessionId: String,
+    @Deprecated("Provided as session_id")
+    // deprecated properties
+    @SerialName("sessionId")
+    val oldSessionId: String,
 ) : SessionToken

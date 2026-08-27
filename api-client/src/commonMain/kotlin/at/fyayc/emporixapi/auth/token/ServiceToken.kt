@@ -12,11 +12,10 @@ data class ServiceToken(
     @SerialName("expires_in")
     override val expiresIn: Int,
     @SerialName("refresh_token")
-    override val refreshToken: String,
+    override val refreshToken: String?,
     @SerialName("refresh_token_expires_in")
-    override val refreshTokenExpiresIn: Int,
+    override val refreshTokenExpiresIn: Int?,
     @SerialName("session_idle_time")
     val sessionIdleTime: Int,
-    @SerialName("scope")
-    override val scope: String,
+    val scope: String,
 ) : OAuthToken

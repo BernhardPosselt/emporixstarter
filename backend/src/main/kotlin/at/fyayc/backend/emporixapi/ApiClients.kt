@@ -41,6 +41,9 @@ class ApiClients {
         install(ContentNegotiation) {
             json(Json {
                 explicitNulls = false
+                // enable this for forwards compatibility; downside is that optional properties that were mistyped
+                // won't be fixed
+                // ignoreUnknownKeys = true
             })
         }
 

@@ -15,7 +15,7 @@ suspend inline fun <reified T> HttpResponse.parseOrThrow(
             bodyAsText()
         )
     }
-) = when (val code = status.value) {
+) = when (status.value) {
     in 200..399 -> body<T>()
     else -> throw errorHandler()
 }
