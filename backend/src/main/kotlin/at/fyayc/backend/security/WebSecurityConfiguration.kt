@@ -97,6 +97,7 @@ class WebSecurityConfiguration {
                 // allow cors
                 authorize(HttpMethod.OPTIONS, "/**", permitAll)
                 authorize(HttpMethod.GET, "/products/**", authenticated)
+                authorize(HttpMethod.GET, "/cart/**", hasRole(CUSTOMER_ROLE))
                 authorize("/**", denyAll)
             }
             anonymous {

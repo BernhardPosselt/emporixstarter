@@ -19,10 +19,12 @@ class AuthenticationFilterDsl(
     override fun configure(http: HttpSecurity) {
         val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
         val repository = http.getSharedObject(SecurityContextRepository::class.java)
+//        val strategy = http.getSharedObject(SessionAuthenticationStrategy::class.java)
         filters.forEach {
             val filter = it()
             filter.setAuthenticationManager(authenticationManager)
             filter.setSecurityContextRepository(repository)
+//            filter.setSessionAuthenticationStrategy(strategy)
             http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter::class.java)
         }
     }
