@@ -17,6 +17,7 @@ spring:
         # enabling this however locks us out of redis clustering, see https://docs.spring.io/spring-session/reference/configuration/redis.html#choosing-between-regular-and-indexed
         # ideally we go for indexed without clustering
         # repository-type: indexed
+    #        flush-mode: immediate
     # anonymous tokens only can be refreshed for 24 hours and live for 1 hour
     # since we don't refresh the token if the user does not log in, we require
     # a shorter session refresh time of 12 hours; you could extend that if

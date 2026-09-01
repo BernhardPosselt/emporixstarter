@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToStream
-import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.stereotype.Component
@@ -48,7 +47,7 @@ class CustomerAuthenticationSuccessHandler(
                     LanguageIso.fromIso(it.language.uppercase())
                 }
                 ?: LanguageIso.EN
-            response.status = HttpStatus.OK.value()
+            // TODO: verify that previous session was invalidated
             // note: this is correct. we must not close the stream or additional headers set after this
             // call like the session cookie will not be written
             json.encodeToStream(

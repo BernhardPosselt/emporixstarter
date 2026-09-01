@@ -5,6 +5,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.context.SecurityContextRepository
 
 typealias AuthenticationFilterFactory = (AuthenticationManager) -> AbstractAuthenticationProcessingFilter
 
@@ -19,8 +20,10 @@ class AuthenticationFilterDsl(
 ) : AbstractHttpConfigurer<AuthenticationFilterDsl, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
+        val repository = http.getSharedObject(SecurityContextRepository::class.java)
         filters.forEach {
             val filter = it(authenticationManager)
+            filter.setSecurityContextRepository(repository)
             http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter::class.java)
         }
     }

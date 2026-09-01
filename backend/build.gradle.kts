@@ -22,6 +22,7 @@ dependencies {
     implementation(libs.spring.boot.starter.webmvc)
     implementation(libs.spring.boot.starter.kotlinx.serialization.json)
     implementation(libs.jackson.kotlin)
+    implementation(libs.jackson.kotlin.old)
     implementation(libs.springdoc)
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines)

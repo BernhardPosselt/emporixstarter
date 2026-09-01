@@ -35,7 +35,8 @@ testcontainers-junit-jupiter = { module = "org.testcontainers:testcontainers-jun
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 mockito = { module = "org.mockito:mockito-core" }
 # this is required because of https://github.com/springdoc/springdoc-openapi/issues/3172
-jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+jackson-kotlin-old = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+jackson-kotlin = { module = "tools.jackson.module:jackson-module-kotlin" }
 # mvc stack
 spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
 spring-boot-starter-webmvc = { module = "org.springframework.boot:spring-boot-starter-webmvc" }
