@@ -128,8 +128,8 @@ class WebSecurityConfiguration {
         )
         http.apply(
             AuthenticationFilterDsl(
-                { EmporixSSOFilter(json, it, customerAuthenticationSuccessHandler) },
-                { EmporixUsernamePasswordFilter(json, it, customerAuthenticationSuccessHandler) },
+                { EmporixSSOFilter(json, customerAuthenticationSuccessHandler) },
+                { EmporixUsernamePasswordFilter(json, customerAuthenticationSuccessHandler) },
             )
         )
         return http.build()

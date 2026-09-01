@@ -9,7 +9,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationServiceException
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
@@ -18,11 +17,9 @@ import kotlin.time.Clock
 
 class EmporixSSOFilter(
     private val json: Json,
-    authenticationManager: AuthenticationManager,
     customerAuthenticationSuccessHandler: CustomerAuthenticationSuccessHandler,
 ) : AbstractAuthenticationProcessingFilter(
     PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, "/sso"),
-    authenticationManager,
 ) {
     init {
         setAuthenticationSuccessHandler(customerAuthenticationSuccessHandler)

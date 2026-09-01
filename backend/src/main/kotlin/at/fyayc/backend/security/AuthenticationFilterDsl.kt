@@ -7,8 +7,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.context.SecurityContextRepository
 
-typealias AuthenticationFilterFactory = (AuthenticationManager) -> AbstractAuthenticationProcessingFilter
-
 /**
  * auth filters need to be registered using a custom DSL since the
  * authenticationManager instance is not yet available yet
@@ -16,13 +14,14 @@ typealias AuthenticationFilterFactory = (AuthenticationManager) -> AbstractAuthe
  * also see: https://medium.com/@persolenom/are-you-using-component-in-spring-security-filters-stop-now-its-wrong-and-dangerous-801f6671a2f9
  */
 class AuthenticationFilterDsl(
-    vararg val filters: AuthenticationFilterFactory,
+    vararg val filters: () -> AbstractAuthenticationProcessingFilter,
 ) : AbstractHttpConfigurer<AuthenticationFilterDsl, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
         val repository = http.getSharedObject(SecurityContextRepository::class.java)
         filters.forEach {
-            val filter = it(authenticationManager)
+            val filter = it()
+            filter.setAuthenticationManager(authenticationManager)
             filter.setSecurityContextRepository(repository)
             http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter::class.java)
         }
