@@ -19,22 +19,26 @@ import org.springframework.security.web.context.SecurityContextRepository
  * the UsernamePasswordAuthenticationFilter
  *
  */
-class AuthenticationFilterDsl(
-    vararg val filters: () -> AbstractAuthenticationProcessingFilter,
-) : AbstractHttpConfigurer<AuthenticationFilterDsl, HttpSecurity>() {
+class AuthenticationFilterDsl : AbstractHttpConfigurer<AuthenticationFilterDsl, HttpSecurity>() {
+    private val filters = ArrayList<AbstractAuthenticationProcessingFilter>()
+
     override fun configure(http: HttpSecurity) {
         val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
         val repository = http.getSharedObject(SecurityContextRepository::class.java)
         val strategy = http.getSharedObject(SessionAuthenticationStrategy::class.java)
         val rememberMeServices = http.getSharedObject(RememberMeServices::class.java)
         filters.forEach {
-            val filter = it()
-            filter.setAuthenticationManager(authenticationManager)
-            filter.setSecurityContextRepository(repository)
-            filter.setSessionAuthenticationStrategy(strategy)
-            filter.setSecurityContextHolderStrategy(securityContextHolderStrategy)
-            rememberMeServices?.let { remember -> filter.rememberMeServices = remember }
-            http.addFilterBefore(postProcess(filter), UsernamePasswordAuthenticationFilter::class.java)
+            it.setAuthenticationManager(authenticationManager)
+            it.setSecurityContextRepository(repository)
+            it.setSessionAuthenticationStrategy(strategy)
+            it.setSecurityContextHolderStrategy(securityContextHolderStrategy)
+            rememberMeServices?.let { remember -> it.rememberMeServices = remember }
+            http.addFilterBefore(postProcess(it), UsernamePasswordAuthenticationFilter::class.java)
         }
+    }
+
+    fun addFilter(filter: AbstractAuthenticationProcessingFilter): AuthenticationFilterDsl {
+        filters.add(filter)
+        return this
     }
 }

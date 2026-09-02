@@ -8,20 +8,13 @@ import at.fyayc.backend.security.auth.EmporixLoginService
 import at.fyayc.backend.security.auth.LoginSuccess
 import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticationProvider
 import at.fyayc.backend.security.auth.password.EmporixUsernamePasswordFilter
-import at.fyayc.backend.security.auth.password.PasswordLogin
 import at.fyayc.backend.security.auth.sso.EmporixSSOAuthenticationProvider
 import at.fyayc.backend.security.auth.sso.EmporixSSOFilter
-import io.swagger.v3.oas.models.Operation
+import at.fyayc.backend.util.buildLoginDocs
+import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
 import io.swagger.v3.oas.models.PathItem
-import io.swagger.v3.oas.models.media.Content
-import io.swagger.v3.oas.models.media.MediaType
-import io.swagger.v3.oas.models.parameters.RequestBody
-import io.swagger.v3.oas.models.responses.ApiResponse
-import io.swagger.v3.oas.models.responses.ApiResponses
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
-import org.springdoc.core.customizers.OpenApiCustomizer
-import org.springdoc.core.utils.SpringDocAnnotationsUtils
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -130,12 +123,11 @@ class WebSecurityConfiguration {
                 sessionTokenStorage
             )
         )
-        http.with(
-            AuthenticationFilterDsl(
-                { EmporixSSOFilter(json, customerAuthenticationSuccessHandler) },
-                { EmporixUsernamePasswordFilter(json, customerAuthenticationSuccessHandler) },
-            )
-        )
+        http.with(AuthenticationFilterDsl()) { dsl ->
+            dsl
+                .addFilter(EmporixSSOFilter(json, customerAuthenticationSuccessHandler))
+                .addFilter(EmporixUsernamePasswordFilter(json, customerAuthenticationSuccessHandler))
+        }
         return http.build()
     }
 
@@ -155,59 +147,21 @@ class WebSecurityConfiguration {
         }
     }
 
-    // see https://github.com/springdoc/springdoc-openapi/blob/64d512824d8e01f8ec4d8fa3510a6ecd8d40aa57/springdoc-openapi-starter-common/src/main/java/org/springdoc/core/configuration/SpringDocSecurityConfiguration.java#L108
     @Bean
-    fun loginEndpoints(): OpenApiCustomizer = {
-        val jsonMediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE
-        it.path(
-            "/login", PathItem()
-                .post(
-                    Operation()
-                        .tags(listOf("Login"))
-                        .operationId("login")
-                        .requestBody(
-                            RequestBody()
-                                .required(true)
-                                .content(
-                                    Content()
-                                        .addMediaType(
-                                            jsonMediaType, MediaType()
-                                                .schema(
-                                                    SpringDocAnnotationsUtils.resolveSchemaFromType(
-                                                        PasswordLogin::class.java,
-                                                        it.components,
-                                                        null,
-                                                    ).required(listOf("email", "password"))
-                                                )
-                                        )
-                                )
-                        )
-                        .responses(
-                            ApiResponses()
-                                .addApiResponse(
-                                    "200", ApiResponse()
-                                        .description("Login a Customer via E-Mail and Password")
-                                        .content(
-                                            Content()
-                                                .addMediaType(
-                                                    jsonMediaType,
-                                                    MediaType()
-                                                        .schema(
-                                                            SpringDocAnnotationsUtils.resolveSchemaFromType(
-                                                                LoginSuccess::class.java,
-                                                                it.components,
-                                                                null,
-                                                            ).required(listOf("languageIso", "currencyIso"))
-                                                        )
-                                                )
-                                        )
-                                )
-                                .addApiResponse(
-                                    "403", ApiResponse()
-                                        .description("If anything fails")
-                                )
-                        )
-                )
-        )
-    }
+    fun loginEndpoint() = buildLoginDocs(
+        "/login", PathItem.HttpMethod.POST,
+        id = "login",
+        description = "Login a user with email and password",
+        requestBody = LeasedCustomerToken::class,
+        responseBody = LoginSuccess::class,
+    )
+
+    @Bean
+    fun loginEndpointSso() = buildLoginDocs(
+        "/sso", PathItem.HttpMethod.POST,
+        id = "ssoLogin",
+        description = "Login a user with a customer token",
+        requestBody = LeasedCustomerToken::class,
+        responseBody = LoginSuccess::class,
+    )
 }
