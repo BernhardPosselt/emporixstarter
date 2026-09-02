@@ -5,6 +5,7 @@ import io.swagger.v3.core.converter.ModelConverters
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.Operation
 import io.swagger.v3.oas.models.PathItem
+import io.swagger.v3.oas.models.headers.Header
 import io.swagger.v3.oas.models.media.Content
 import io.swagger.v3.oas.models.media.MediaType
 import io.swagger.v3.oas.models.media.Schema
@@ -68,9 +69,10 @@ class OpenApiConfigurer(private val openAPI: OpenAPI) {
                             .tags(config.tags)
                             .operationId(config.id)
                             .description(config.description)
+                            .parameters(config.parameters)
                             .apply {
                                 val body = config.requestBody
-                                if (body != null) {
+                                val appendToBody = if (body != null) {
                                     requestBody(
                                         RequestBody()
                                             .required(config.required)
@@ -80,30 +82,38 @@ class OpenApiConfigurer(private val openAPI: OpenAPI) {
                                                         .schema(resolveType(body))
                                                 )
                                             )
-                                    ).responses(
-                                        ApiResponses()
-                                            .apply {
-                                                config.responses.forEach { (code, response) ->
-                                                    addApiResponse(
-                                                        code, ApiResponse()
-                                                            .description(response.description)
-                                                            .apply {
-                                                                response.clazz?.let {
-                                                                    content(
-                                                                        Content()
-                                                                            .addMediaType(
-                                                                                response.produces,
-                                                                                MediaType()
-                                                                                    .schema(resolveType(it))
-                                                                            )
-                                                                    )
-                                                                }
-                                                            }
-                                                    )
-                                                }
-                                            }
                                     )
+                                } else {
+                                    requestBody(RequestBody())
                                 }
+                                appendToBody.responses(
+                                    ApiResponses()
+                                        .apply {
+                                            config.responses.forEach { (code, response) ->
+                                                addApiResponse(
+                                                    code, ApiResponse()
+                                                        .headers(response.headers.map { (name, value) ->
+                                                            name to Header()
+                                                                .description(value.description)
+                                                                .required(value.required)
+                                                        }.toMap())
+                                                        .description(response.description)
+                                                        .apply {
+                                                            response.clazz?.let {
+                                                                content(
+                                                                    Content()
+                                                                        .addMediaType(
+                                                                            response.produces,
+                                                                            MediaType()
+                                                                                .schema(resolveType(it))
+                                                                        )
+                                                                )
+                                                            }
+                                                        }
+                                                )
+                                            }
+                                        }
+                                )
                             }
                     )
                 }
