@@ -27,7 +27,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
-import org.springframework.security.config.ObjectPostProcessor
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -88,7 +87,6 @@ class WebSecurityConfiguration {
         customerAuthenticationSuccessHandler: CustomerAuthenticationSuccessHandler,
         json: Json,
         properties: BackendProperties,
-        objectPostProcessor: ObjectPostProcessor<Any>,
     ): SecurityFilterChain {
         val groups = properties.emporixGroups
         http {
@@ -132,14 +130,11 @@ class WebSecurityConfiguration {
                 sessionTokenStorage
             )
         )
-        http.apply(
+        http.with(
             AuthenticationFilterDsl(
                 { EmporixSSOFilter(json, customerAuthenticationSuccessHandler) },
                 { EmporixUsernamePasswordFilter(json, customerAuthenticationSuccessHandler) },
             )
-                // this is required to let spring inject additional beans via dependency
-                // injection
-                .withObjectPostProcessor(objectPostProcessor)
         )
         return http.build()
     }

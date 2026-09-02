@@ -14,6 +14,10 @@ import org.springframework.security.web.context.SecurityContextRepository
  * authenticationManager instance is not yet available yet
  * see https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter#disqus_thread
  * also see: https://medium.com/@persolenom/are-you-using-component-in-spring-security-filters-stop-now-its-wrong-and-dangerous-801f6671a2f9
+ *
+ * Much of this is taken from AbstractAuthenticationFilterConfigurer.configure() which is used to configure
+ * the UsernamePasswordAuthenticationFilter
+ *
  */
 class AuthenticationFilterDsl(
     vararg val filters: () -> AbstractAuthenticationProcessingFilter,
@@ -28,9 +32,9 @@ class AuthenticationFilterDsl(
             filter.setAuthenticationManager(authenticationManager)
             filter.setSecurityContextRepository(repository)
             filter.setSessionAuthenticationStrategy(strategy)
+            filter.setSecurityContextHolderStrategy(securityContextHolderStrategy)
             rememberMeServices?.let { remember -> filter.rememberMeServices = remember }
-            postProcess(filter)
-            http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter::class.java)
+            http.addFilterBefore(postProcess(filter), UsernamePasswordAuthenticationFilter::class.java)
         }
     }
 }
