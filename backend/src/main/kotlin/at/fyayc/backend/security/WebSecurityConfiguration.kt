@@ -2,6 +2,8 @@ package at.fyayc.backend.security
 
 import at.fyayc.backend.BackendProperties
 import at.fyayc.backend.emporixapi.SessionTokenStorage
+import at.fyayc.backend.openapi.openApi
+import at.fyayc.backend.openapi.response
 import at.fyayc.backend.security.auth.CustomerAuthenticationSuccessHandler
 import at.fyayc.backend.security.auth.CustomerTokenRefreshFailedFilter
 import at.fyayc.backend.security.auth.EmporixLoginService
@@ -10,9 +12,7 @@ import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticatio
 import at.fyayc.backend.security.auth.password.EmporixUsernamePasswordFilter
 import at.fyayc.backend.security.auth.sso.EmporixSSOAuthenticationProvider
 import at.fyayc.backend.security.auth.sso.EmporixSSOFilter
-import at.fyayc.backend.util.buildLoginDocs
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
-import io.swagger.v3.oas.models.PathItem
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest
@@ -40,6 +40,11 @@ class WebSecurityConfiguration {
 
     @Bean
     fun passwordEncounter() = PasswordEncoderFactories.createDelegatingPasswordEncoder()
+
+    @Bean
+    fun json() = Json {
+        explicitNulls = false
+    }
 
     @Bean
     @Order(1)
@@ -148,20 +153,30 @@ class WebSecurityConfiguration {
     }
 
     @Bean
-    fun loginEndpoint() = buildLoginDocs(
-        "/login", PathItem.HttpMethod.POST,
-        id = "login",
-        description = "Login a user with email and password",
-        requestBody = LeasedCustomerToken::class,
-        responseBody = LoginSuccess::class,
-    )
-
-    @Bean
-    fun loginEndpointSso() = buildLoginDocs(
-        "/sso", PathItem.HttpMethod.POST,
-        id = "ssoLogin",
-        description = "Login a user with a customer token",
-        requestBody = LeasedCustomerToken::class,
-        responseBody = LoginSuccess::class,
-    )
+    fun loginEndpoint() = openApi {
+        post("/login") {
+            id = "login"
+            tags = listOf("Login")
+            description = "Login a user with email and password"
+            requestBody = LeasedCustomerToken::class
+            responses = mapOf(
+                "200" to response(LoginSuccess::class),
+                "403" to response {
+                    description = "If anything went badly"
+                }
+            )
+        }
+        post("/sso") {
+            id = "sso"
+            tags = listOf("Login")
+            description = "Login a user with SSO"
+            requestBody = LeasedCustomerToken::class
+            responses = mapOf(
+                "200" to response(LoginSuccess::class),
+                "403" to response {
+                    description = "If anything went badly"
+                }
+            )
+        }
+    }
 }
