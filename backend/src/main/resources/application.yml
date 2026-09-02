@@ -24,6 +24,9 @@ spring:
     timeout: 86280s
 backend:
   cors-domains: [ ]
+  # these ids map 1:1 to emporix group ids, e.g. https://admin.emporix.io/administration/customer-groups#/groups/1gr5e52e-6e27-4ac5-9471-2467d3fb7500?backTo=%2F
+  emporix-groups:
+    customer: "1gr5e52e-6e27-4ac5-9471-2467d3fb7500"
   emporix-api:
     timeout-millis: 55000 # this must be shorter than the redis lock timeout
     oauth:

@@ -4,7 +4,9 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+import org.springframework.security.web.authentication.RememberMeServices
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
 import org.springframework.security.web.context.SecurityContextRepository
 
 /**
@@ -19,12 +21,15 @@ class AuthenticationFilterDsl(
     override fun configure(http: HttpSecurity) {
         val authenticationManager = http.getSharedObject(AuthenticationManager::class.java)
         val repository = http.getSharedObject(SecurityContextRepository::class.java)
-//        val strategy = http.getSharedObject(SessionAuthenticationStrategy::class.java)
+        val strategy = http.getSharedObject(SessionAuthenticationStrategy::class.java)
+        val rememberMeServices = http.getSharedObject(RememberMeServices::class.java)
         filters.forEach {
             val filter = it()
             filter.setAuthenticationManager(authenticationManager)
             filter.setSecurityContextRepository(repository)
-//            filter.setSessionAuthenticationStrategy(strategy)
+            filter.setSessionAuthenticationStrategy(strategy)
+            rememberMeServices?.let { remember -> filter.rememberMeServices = remember }
+            postProcess(filter)
             http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter::class.java)
         }
     }

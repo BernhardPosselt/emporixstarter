@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
+import org.springframework.security.config.ObjectPostProcessor
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -86,7 +87,10 @@ class WebSecurityConfiguration {
         sessionTokenStorage: SessionTokenStorage,
         customerAuthenticationSuccessHandler: CustomerAuthenticationSuccessHandler,
         json: Json,
+        properties: BackendProperties,
+        objectPostProcessor: ObjectPostProcessor<Any>,
     ): SecurityFilterChain {
+        val groups = properties.emporixGroups
         http {
             securityMatcher("/**")
             authorizeHttpRequests {
@@ -97,12 +101,13 @@ class WebSecurityConfiguration {
                 // allow cors
                 authorize(HttpMethod.OPTIONS, "/**", permitAll)
                 authorize(HttpMethod.GET, "/products/**", authenticated)
-                authorize(HttpMethod.GET, "/cart/**", hasRole(CUSTOMER_ROLE))
+                authorize(HttpMethod.GET, "/profile/**", hasRole(groups.customer))
                 authorize("/**", denyAll)
             }
             anonymous {
 
             }
+            formLogin { }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.IF_REQUIRED
                 sessionConcurrency {
@@ -132,6 +137,9 @@ class WebSecurityConfiguration {
                 { EmporixSSOFilter(json, customerAuthenticationSuccessHandler) },
                 { EmporixUsernamePasswordFilter(json, customerAuthenticationSuccessHandler) },
             )
+                // this is required to let spring inject additional beans via dependency
+                // injection
+                .withObjectPostProcessor(objectPostProcessor)
         )
         return http.build()
     }

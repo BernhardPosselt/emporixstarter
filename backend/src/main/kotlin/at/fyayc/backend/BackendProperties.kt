@@ -8,8 +8,10 @@ data class BackendProperties(
     val users: Users,
     val corsDomains: List<String>,
     val tenant: String,
-    val emporixApi: EmporixApi
+    val emporixApi: EmporixApi,
+    val emporixGroups: EmporixGroups,
 ) {
+    data class EmporixGroups(val customer: String)
     data class Users(val actuator: User) {
         data class User(val login: String, val password: String)
     }
