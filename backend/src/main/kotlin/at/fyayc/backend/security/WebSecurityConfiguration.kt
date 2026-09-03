@@ -10,6 +10,7 @@ import at.fyayc.backend.security.auth.EmporixLoginService
 import at.fyayc.backend.security.auth.LoginSuccess
 import at.fyayc.backend.security.auth.password.EmporixPasswordLoginAuthenticationProvider
 import at.fyayc.backend.security.auth.password.EmporixUsernamePasswordFilter
+import at.fyayc.backend.security.auth.password.PasswordLogin
 import at.fyayc.backend.security.auth.sso.EmporixSSOAuthenticationProvider
 import at.fyayc.backend.security.auth.sso.EmporixSSOFilter
 import at.fyayc.emporixapi.auth.token.LeasedCustomerToken
@@ -158,7 +159,7 @@ class WebSecurityConfiguration {
             id = "login"
             tags = listOf("Login")
             description = "Login a user with email and password"
-            requestBody = LeasedCustomerToken::class
+            requestBody = PasswordLogin::class
             responses = mapOf(
                 "200" to response(LoginSuccess::class),
                 "403" to response {
