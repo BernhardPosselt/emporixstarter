@@ -1,4 +1,4 @@
-package at.fyayc.emporixapi.auth
+package at.fyayc.emporixapi.iam
 
 enum class UserType {
     CUSTOMER,

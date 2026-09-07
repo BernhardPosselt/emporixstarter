@@ -1,4 +1,4 @@
-package at.fyayc.emporixapi.util
+package at.fyayc.emporixapi.pagination
 
 import io.ktor.http.*
 

@@ -1,4 +1,4 @@
-package at.fyayc.emporixapi.util
+package at.fyayc.emporixapi.pagination
 
 import at.fyayc.emporixapi.i18n.LanguageIso
 

@@ -1,4 +1,4 @@
-package at.fyayc.emporixapi.auth
+package at.fyayc.emporixapi.iam
 
 import at.fyayc.emporixapi.i18n.TranslatedValue
 import at.fyayc.emporixapi.session.Metadata

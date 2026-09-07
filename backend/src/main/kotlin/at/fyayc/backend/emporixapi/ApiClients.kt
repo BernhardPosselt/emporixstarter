@@ -4,11 +4,11 @@ import at.fyayc.backend.BackendProperties
 import at.fyayc.backend.toClientConfig
 import at.fyayc.emporixapi.auth.AnonymousOAuthClient
 import at.fyayc.emporixapi.auth.CustomerOAuthClient
-import at.fyayc.emporixapi.auth.IAMClient
 import at.fyayc.emporixapi.auth.ServiceOauthClient
 import at.fyayc.emporixapi.customer.CustomerClient
 import at.fyayc.emporixapi.http.ApiConfig
 import at.fyayc.emporixapi.http.registerOEInterceptors
+import at.fyayc.emporixapi.iam.IAMClient
 import at.fyayc.emporixapi.session.SessionClient
 import io.ktor.client.*
 import io.ktor.client.plugins.*
