@@ -1,10 +1,10 @@
 package at.fyayc.emporixapi.iam
 
 import at.fyayc.emporixapi.auth.token.ServiceToken
-import at.fyayc.emporixapi.catalog.acceptLanguage
 import at.fyayc.emporixapi.http.ApiConfig
 import at.fyayc.emporixapi.http.parseOrThrow
 import at.fyayc.emporixapi.i18n.AcceptLanguage
+import at.fyayc.emporixapi.i18n.acceptLanguage
 import at.fyayc.emporixapi.pagination.Pagination
 import at.fyayc.emporixapi.pagination.paginateWith
 import io.ktor.client.*

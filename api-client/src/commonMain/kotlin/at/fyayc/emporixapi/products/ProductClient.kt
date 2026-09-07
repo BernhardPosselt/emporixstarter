@@ -37,9 +37,9 @@ class ProductClient(
                 contentLanguage?.let {
                     append(HttpHeaders.ContentLanguage, it)
                 }
-                bearerAuth(token.accessToken)
-                setBody(product)
             }
+            bearerAuth(token.accessToken)
+            setBody(product)
         }.parseOrThrow<Unit>()
     }
 }

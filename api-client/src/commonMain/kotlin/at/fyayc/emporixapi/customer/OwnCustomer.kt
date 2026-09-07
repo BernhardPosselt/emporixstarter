@@ -3,8 +3,8 @@ package at.fyayc.emporixapi.customer
 import at.fyayc.emporixapi.i18n.CurrencyIso
 import at.fyayc.emporixapi.i18n.LanguageIso
 import at.fyayc.emporixapi.i18n.LanguageIsoSerializer
-import at.fyayc.emporixapi.session.Metadata
 import at.fyayc.emporixapi.site.SiteCode
+import at.fyayc.emporixapi.util.Metadata
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
