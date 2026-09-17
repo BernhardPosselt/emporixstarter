@@ -28,18 +28,6 @@ kotlin {
         )
     }
 
-    js {
-        useEsModules()
-        nodejs {
-
-        }
-        compilerOptions {
-            target = "es2015"
-        }
-        binaries.library()
-        generateTypeScriptDefinitions()
-    }
-
     jvm {
         javaToolchains {
             version = JavaLanguageVersion.of(25)
@@ -65,6 +53,7 @@ kotlin {
 
 
         jvmMain.dependencies {
+            implementation("ch.qos.logback:logback-classic:1.6.3")
             api(libs.ktor.client.java)
         }
 

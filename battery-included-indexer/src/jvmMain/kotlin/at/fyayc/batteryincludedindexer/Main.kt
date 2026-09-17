@@ -16,17 +16,46 @@ suspend fun main() {
             json(json)
         }
         install(Logging) {
+            level = LogLevel.ALL
         }
     }
+    val apiKey = System.getenv("BATTERY_INCLUDED_API_KEY")
     val config = ApiConfig(
         baseUrl = "https://api.batteryincluded.io",
-        collection = "testing.foryouandyourcustomers.com",
-        apiKey = System.getenv("BATTERY_INCLUDED_API_KEY"),
+        collection = "customer.testing.foryouandyourcustomers.com",
+        apiKey = apiKey,
     )
     val indexer = Indexer(
         client = client,
         config = config,
         json = json,
     )
-    indexer.indexMany(listOf(SapArticle(id = "1"), SapArticle(id = "2")), typeOf<SapArticle>())
+    indexer.indexMany(
+        listOf(
+            IndexedProduct(
+                id = "1",
+                cooperative = mapOf(
+                    "1600" to Cooperative(
+                        price = "19.11"
+                    ),
+                    "uvp" to Cooperative(
+                        price = "18.11"
+                    )
+                ),
+                name = "iphone"
+            ),
+            IndexedProduct(
+                id = "2",
+                cooperative = mapOf(
+                    "1600" to Cooperative(
+                        price = "15.11"
+                    ),
+                    "uvp" to Cooperative(
+                        price = "181.11"
+                    )
+                ),
+                name = "iphone 2"
+            )
+        ), typeOf<IndexedProduct>()
+    )
 }

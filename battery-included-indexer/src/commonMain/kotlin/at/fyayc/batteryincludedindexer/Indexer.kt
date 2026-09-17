@@ -58,7 +58,8 @@ class Indexer(
             val body = ChannelWriterContent(
                 body = {
                     items.forEach {
-                        writeStringUtf8(json.encodeToString(serializer, it))
+                        val value = json.encodeToString(serializer, it)
+                        writeStringUtf8(value)
                         writeStringUtf8("\n")
                     }
                 },
