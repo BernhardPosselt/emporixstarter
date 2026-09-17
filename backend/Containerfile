@@ -6,11 +6,10 @@ ARG UID=1000
 ARG GID=1000
 ENV SPRING_PROFILES_ACTIVE=ci
 
+RUN apk update && apk add --no-cache docker-cli docker-cli-compose
 RUN addgroup -g ${GID} server && adduser -u ${UID} -G server -D server -h /home/server
 
 WORKDIR /home/server
-
-USER server
 
 COPY --chown=server:server ../api-client api-client
 COPY --chown=server:server ../libs.versions.toml libs.versions.toml

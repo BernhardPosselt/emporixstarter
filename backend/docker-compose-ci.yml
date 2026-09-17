@@ -13,6 +13,6 @@ services:
       JVM_OPTS: "-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n -Xms1024m -Xmx1024m"
     tty: true
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
       - ./container/build/test-results:/home/server/backend/build/test-results
       - ./container/build/jacoco:/home/server/backend/build/jacoco

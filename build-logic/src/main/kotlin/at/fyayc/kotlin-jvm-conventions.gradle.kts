@@ -45,6 +45,10 @@ testing {
                             showStandardStreams = true
                             exceptionFormat = TestExceptionFormat.FULL
                         }
+                        reports {
+                            html.required = true
+                            junitXml.required = true
+                        }
                     }
                 }
             }
@@ -62,6 +66,10 @@ testing {
                                 testLogging {
                                     showStandardStreams = true
                                     exceptionFormat = TestExceptionFormat.FULL
+                                }
+                                reports {
+                                    html.required = true
+                                    junitXml.required = true
                                 }
                             }
                         }
