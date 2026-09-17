@@ -104,7 +104,6 @@ class WebSecurityConfiguration {
             anonymous {
 
             }
-            formLogin { }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.IF_REQUIRED
                 sessionConcurrency {

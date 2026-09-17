@@ -25,6 +25,6 @@ class ProductControllerSecurityTest(
             .header("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
-            .expectStatus().isUnauthorized
+            .expectStatus().isForbidden
     }
 }
