@@ -33,6 +33,7 @@ dependencies {
     testImplementation(libs.spring.boot.starter.webmvc.test)
     testImplementation(libs.spring.boot.starter.restclient.test)
     testImplementation(libs.spring.boot.testcontainers)
+    testImplementation(libs.testcontainers.redis)
     testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.testcontainers.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)

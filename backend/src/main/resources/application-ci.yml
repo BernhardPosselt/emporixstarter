@@ -3,6 +3,8 @@ backend:
     oauth:
       storefront:
         client-secret: "developmentpassword"
+      emporix:
+        client-secret: "developmentpassword"
   users:
     actuator:
       password: "developmentpassword"

@@ -17,6 +17,8 @@ abstract class CreateDevProfile : DefaultTask() {
             oauth:
               storefront:
                 client-secret: "CHANGEME"
+              emporix:
+                client-secret: "developmentpassword"
           users:
             actuator:
               password: "developmentpassword"
