@@ -3,6 +3,5 @@
 */.kotlin
 */Containerfile
 */.idea
-*/docker-compose-*.yml
 */container
 .git
